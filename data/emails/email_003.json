@@ -1,0 +1,26 @@
+{
+  "id": "email_003",
+  "headers": {
+    "from": "Accounts Receivable <billing@acme-invoices.example>",
+    "to": "ap@company.com",
+    "subject": "Invoice INV-2026-1019 - Overdue Payment",
+    "spf_result": "fail",
+    "dkim_result": "none",
+    "dmarc_result": "fail",
+    "return-path": "bounce@acme-invoices.example",
+    "reply-to": "billing@acme-invoices.example"
+  },
+  "body_text": "Dear Accounts Payable Team,\n\nPlease find attached invoice INV-2026-1019. Open the attached document to review the payment details. Failure to settle within 24 hours will result in service suspension.\n\nAccounts Receivable\nAcme Industrial Supply",
+  "links": [],
+  "attachments": [
+    {
+      "filename": "Invoice_2026_1019.pdf.exe",
+      "hash": "deadbeefcafebabedeadbeefcafebabedeadbeefcafebabedeadbeefcafebabe",
+      "mime_type": "application/pdf",
+      "size_bytes": 182341
+    }
+  ],
+  "label": "phishing",
+  "expected_action": "Block",
+  "notes": "发票附件双扩展名（.pdf.exe），MIME 声明为 PDF 但实际为可执行文件，哈希命中恶意文件情报。"
+}

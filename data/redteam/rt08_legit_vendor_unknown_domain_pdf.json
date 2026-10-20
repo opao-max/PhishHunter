@@ -1,0 +1,33 @@
+{
+  "id": "rt08_legit_vendor_unknown_domain_pdf",
+  "label": "legit",
+  "expected_action": "Allow",
+  "redteam_focus": "unknown external vendor with a normal PDF invoice",
+  "notes": "Unknown domain is not in mock intel; normal PDF attachment and no hash.",
+  "headers": {
+    "from": "Northwind Supplies <billing@northwind-supplies.example>",
+    "to": "procurement@company.com",
+    "subject": "Invoice NW-2026-1019",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "billing@northwind-supplies.example"
+  },
+  "body_text": "Dear Procurement Team,\n\nPlease find attached invoice NW-2026-1019 for the office supplies delivered on 2026-10-12. Payment terms are net 30. You can also download the document from our customer portal:\n\nhttps://northwind-supplies.example/portal/docs/NW-2026-1019\n\nThank you,\nNorthwind Supplies Billing",
+  "body_html": null,
+  "links": [
+    {
+      "original": "https://northwind-supplies.example/portal/docs/NW-2026-1019",
+      "resolved": "",
+      "anchor_text": "customer portal"
+    }
+  ],
+  "attachments": [
+    {
+      "filename": "Invoice_NW-2026-1019.pdf",
+      "mime_type": "application/pdf",
+      "size_bytes": 87342
+    }
+  ],
+  "images": []
+}

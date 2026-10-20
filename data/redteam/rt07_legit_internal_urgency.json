@@ -1,0 +1,27 @@
+{
+  "id": "rt07_legit_internal_urgency",
+  "label": "legit",
+  "expected_action": "Allow",
+  "redteam_focus": "legitimate internal email with urgency and credential words",
+  "notes": "Analyst-written IT notice. Authenticated company.com with an internal self-service link.",
+  "headers": {
+    "from": "IT Service Desk <it-helpdesk@company.com>",
+    "to": "all-staff@company.com",
+    "subject": "Urgent: verify your password before VPN access expires",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "it-helpdesk@company.com"
+  },
+  "body_text": "Hello,\n\nThis is urgent. Your VPN password will expire in 2 hours. Verify your account at the internal self-service portal before then:\n\nhttps://company.com/it/self-service/reset\n\nIf you need help, contact the service desk.\n\nIT Service Desk",
+  "body_html": null,
+  "links": [
+    {
+      "original": "https://company.com/it/self-service/reset",
+      "resolved": "",
+      "anchor_text": "internal self-service portal"
+    }
+  ],
+  "attachments": [],
+  "images": []
+}

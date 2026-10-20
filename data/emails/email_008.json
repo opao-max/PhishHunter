@@ -1,0 +1,30 @@
+{
+  "id": "email_008",
+  "headers": {
+    "from": "TechCrunch Daily <newsletter@techcrunch.example>",
+    "to": "employee@company.com",
+    "subject": "Weekly AI Digest: Model Launches and Research Roundup",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "newsletter@techcrunch.example",
+    "list-unsubscribe": "<https://techcrunch.example/unsubscribe>"
+  },
+  "body_text": "This week in AI: three new open-weight models, a survey of agent benchmarks, and notes from the research community.\n\nRead the full issue: https://techcrunch.example/newsletters/ai-digest\n\nYou are receiving this digest because you subscribed to the weekly newsletter.\nUnsubscribe: https://techcrunch.example/unsubscribe",
+  "links": [
+    {
+      "original": "https://techcrunch.example/newsletters/ai-digest",
+      "resolved": "",
+      "anchor_text": "Read the full issue"
+    },
+    {
+      "original": "https://techcrunch.example/unsubscribe",
+      "resolved": "",
+      "anchor_text": "Unsubscribe"
+    }
+  ],
+  "attachments": [],
+  "label": "legit",
+  "expected_action": "Allow",
+  "notes": "正常行业资讯订阅邮件：老域名、认证全部通过，链接均为干净的官方地址，无账号或付款诱导。"
+}

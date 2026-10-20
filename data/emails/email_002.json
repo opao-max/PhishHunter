@@ -1,0 +1,18 @@
+{
+  "id": "email_002",
+  "headers": {
+    "from": "James Wilson (CEO) <james.wilson.ceo@gmail.com>",
+    "to": "finance.manager@company.com",
+    "subject": "URGENT: Confidential Wire Transfer Request",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "reply-to": "james.wilson.ceo@gmail.com"
+  },
+  "body_text": "Hi,\n\nI am in a board meeting and cannot take calls. Please process an urgent wire transfer today. Our bank account changed, use the new account details I will send in a follow-up. Keep this confidential and do not discuss it with anyone until it is done.\n\nThanks,\nJames Wilson\nCEO",
+  "links": [],
+  "attachments": [],
+  "label": "phishing",
+  "expected_action": "Block",
+  "notes": "CEO 转账欺诈：免费邮箱冒充高管，使用紧迫感、保密要求与付款账户变更话术；即使 SPF/DKIM 通过也必须按语义与身份信号拦截。"
+}

@@ -1,0 +1,271 @@
+{
+  "id": "rt13_malformed_urls_50_links",
+  "label": "phishing",
+  "expected_action": "Block",
+  "redteam_focus": "50 links plus malformed URLs; malicious URL is link #50",
+  "notes": "The first four links are benign and fill the planner's URL-inspection budget. Link #50 is a confirmed-malicious URL present in data/mock_intel.json.",
+  "headers": {
+    "from": "HR Portal <hr@hr-portal.example>",
+    "to": "employee@company.com",
+    "subject": "Benefits enrollment verification required",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass"
+  },
+  "body_text": "Dear employee,\n\nPlease review your benefits enrollment. Verify your account within 24 hours or coverage will be suspended. Use the link below.\n\nHR Portal",
+  "body_html": null,
+  "links": [
+    {
+      "original": "https://company.com/wiki/q3-review",
+      "resolved": "",
+      "anchor_text": "review"
+    },
+    {
+      "original": "https://company.com/it/self-service/reset",
+      "resolved": "",
+      "anchor_text": "portal"
+    },
+    {
+      "original": "https://company.com/security/report",
+      "resolved": "",
+      "anchor_text": "report"
+    },
+    {
+      "original": "https://company.com/",
+      "resolved": "",
+      "anchor_text": "home"
+    },
+    {
+      "original": "http://[::1",
+      "resolved": "",
+      "anchor_text": "bad ipv6"
+    },
+    {
+      "original": "http://exa mple.com/path",
+      "resolved": "",
+      "anchor_text": "space host"
+    },
+    {
+      "original": "http://%zz/%E0%A4%A",
+      "resolved": "",
+      "anchor_text": "bad encoding"
+    },
+    {
+      "original": "not-a-url at all",
+      "resolved": "",
+      "anchor_text": "text"
+    },
+    {
+      "original": "javascript:void(0)",
+      "resolved": "",
+      "anchor_text": "script"
+    },
+    {
+      "original": "data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==",
+      "resolved": "",
+      "anchor_text": "data uri"
+    },
+    {
+      "original": "https://user:pass@company.com/login",
+      "resolved": "",
+      "anchor_text": "userinfo"
+    },
+    {
+      "original": "mailto:security@company.com",
+      "resolved": "",
+      "anchor_text": "mail"
+    },
+    {
+      "original": "https://company.com/news/13",
+      "resolved": "",
+      "anchor_text": "news 13"
+    },
+    {
+      "original": "https://company.com/news/14",
+      "resolved": "",
+      "anchor_text": "news 14"
+    },
+    {
+      "original": "https://company.com/news/15",
+      "resolved": "",
+      "anchor_text": "news 15"
+    },
+    {
+      "original": "https://company.com/news/16",
+      "resolved": "",
+      "anchor_text": "news 16"
+    },
+    {
+      "original": "https://company.com/news/17",
+      "resolved": "",
+      "anchor_text": "news 17"
+    },
+    {
+      "original": "https://company.com/news/18",
+      "resolved": "",
+      "anchor_text": "news 18"
+    },
+    {
+      "original": "https://company.com/news/19",
+      "resolved": "",
+      "anchor_text": "news 19"
+    },
+    {
+      "original": "https://company.com/news/20",
+      "resolved": "",
+      "anchor_text": "news 20"
+    },
+    {
+      "original": "https://company.com/news/21",
+      "resolved": "",
+      "anchor_text": "news 21"
+    },
+    {
+      "original": "https://company.com/news/22",
+      "resolved": "",
+      "anchor_text": "news 22"
+    },
+    {
+      "original": "https://company.com/news/23",
+      "resolved": "",
+      "anchor_text": "news 23"
+    },
+    {
+      "original": "https://company.com/news/24",
+      "resolved": "",
+      "anchor_text": "news 24"
+    },
+    {
+      "original": "https://company.com/news/25",
+      "resolved": "",
+      "anchor_text": "news 25"
+    },
+    {
+      "original": "https://company.com/news/26",
+      "resolved": "",
+      "anchor_text": "news 26"
+    },
+    {
+      "original": "https://company.com/news/27",
+      "resolved": "",
+      "anchor_text": "news 27"
+    },
+    {
+      "original": "https://company.com/news/28",
+      "resolved": "",
+      "anchor_text": "news 28"
+    },
+    {
+      "original": "https://company.com/news/29",
+      "resolved": "",
+      "anchor_text": "news 29"
+    },
+    {
+      "original": "https://company.com/news/30",
+      "resolved": "",
+      "anchor_text": "news 30"
+    },
+    {
+      "original": "https://company.com/news/31",
+      "resolved": "",
+      "anchor_text": "news 31"
+    },
+    {
+      "original": "https://company.com/news/32",
+      "resolved": "",
+      "anchor_text": "news 32"
+    },
+    {
+      "original": "https://company.com/news/33",
+      "resolved": "",
+      "anchor_text": "news 33"
+    },
+    {
+      "original": "https://company.com/news/34",
+      "resolved": "",
+      "anchor_text": "news 34"
+    },
+    {
+      "original": "https://company.com/news/35",
+      "resolved": "",
+      "anchor_text": "news 35"
+    },
+    {
+      "original": "https://company.com/news/36",
+      "resolved": "",
+      "anchor_text": "news 36"
+    },
+    {
+      "original": "https://company.com/news/37",
+      "resolved": "",
+      "anchor_text": "news 37"
+    },
+    {
+      "original": "https://company.com/news/38",
+      "resolved": "",
+      "anchor_text": "news 38"
+    },
+    {
+      "original": "https://company.com/news/39",
+      "resolved": "",
+      "anchor_text": "news 39"
+    },
+    {
+      "original": "https://company.com/news/40",
+      "resolved": "",
+      "anchor_text": "news 40"
+    },
+    {
+      "original": "https://company.com/news/41",
+      "resolved": "",
+      "anchor_text": "news 41"
+    },
+    {
+      "original": "https://company.com/news/42",
+      "resolved": "",
+      "anchor_text": "news 42"
+    },
+    {
+      "original": "https://company.com/news/43",
+      "resolved": "",
+      "anchor_text": "news 43"
+    },
+    {
+      "original": "https://company.com/news/44",
+      "resolved": "",
+      "anchor_text": "news 44"
+    },
+    {
+      "original": "https://company.com/news/45",
+      "resolved": "",
+      "anchor_text": "news 45"
+    },
+    {
+      "original": "https://company.com/news/46",
+      "resolved": "",
+      "anchor_text": "news 46"
+    },
+    {
+      "original": "https://company.com/news/47",
+      "resolved": "",
+      "anchor_text": "news 47"
+    },
+    {
+      "original": "https://company.com/news/48",
+      "resolved": "",
+      "anchor_text": "news 48"
+    },
+    {
+      "original": "https://company.com/news/49",
+      "resolved": "",
+      "anchor_text": "news 49"
+    },
+    {
+      "original": "https://benefits-center.example/enroll/verify",
+      "resolved": "",
+      "anchor_text": "verify your account"
+    }
+  ],
+  "attachments": [],
+  "images": []
+}

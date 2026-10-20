@@ -1,0 +1,25 @@
+{
+  "id": "email_001",
+  "headers": {
+    "from": "Microsoft Support <support@micr0soft-security.com>",
+    "to": "employee@company.com",
+    "subject": "Urgent: Password Expiry Notification",
+    "spf_result": "fail",
+    "dkim_result": "none",
+    "dmarc_result": "fail",
+    "return-path": "bounce@micr0soft-security.com",
+    "reply-to": "support@micr0soft-security.com"
+  },
+  "body_text": "Dear User,\n\nYour password will expire in 2 hours. Click here immediately to verify or your account will be locked.\n\n[http://bit.ly/3xYz](http://bit.ly/3xYz)\n\nMicrosoft Account Team",
+  "links": [
+    {
+      "original": "[http://bit.ly/3xYz](http://bit.ly/3xYz)",
+      "resolved": "http://192.168.1.15/login.php",
+      "anchor_text": "Verify Now"
+    }
+  ],
+  "attachments": [],
+  "label": "phishing",
+  "expected_action": "Block",
+  "notes": "考题原始样例：仿冒 Microsoft 的密码过期通知，短链接跳转到私网 IP 上的登录页，SPF 失败且域名新注册。"
+}

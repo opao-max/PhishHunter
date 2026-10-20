@@ -1,0 +1,26 @@
+{
+  "id": "rt14_unicode_homoglyph_clean_auth",
+  "label": "phishing",
+  "expected_action": "Block",
+  "redteam_focus": "Unicode brand spoof without punycode encoding",
+  "notes": "Sender/link host is m<CYRILLIC I>cr<CYRILLIC O>soft.example. It is visually a Microsoft lookalike, with clean SPF/DKIM/DMARC and an unknown domain. No punycode appears.",
+  "headers": {
+    "from": "Account Security <security@mіcrоsoft.example>",
+    "to": "employee@company.com",
+    "subject": "Session expired: verify your account",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass"
+  },
+  "body_text": "Your session has expired. Verify your account and password within 24 hours at https://mіcrоsoft.example/account/verify\n",
+  "body_html": null,
+  "links": [
+    {
+      "original": "https://mіcrоsoft.example/account/verify",
+      "resolved": "",
+      "anchor_text": "verify your account"
+    }
+  ],
+  "attachments": [],
+  "images": []
+}

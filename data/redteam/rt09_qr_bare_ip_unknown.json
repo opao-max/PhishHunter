@@ -1,0 +1,29 @@
+{
+  "id": "rt09_qr_bare_ip_unknown",
+  "label": "phishing",
+  "expected_action": "Quarantine",
+  "redteam_focus": "QR code payload is a bare IP absent from mock intel",
+  "notes": "The QR destination http://198.51.100.23/ is an IP literal with no credential path and no intelligence record. SPF/DKIM/DMARC pass (attacker-controlled domain), so the QR signal must stand on its own rather than piggy-backing on an auth-failure floor.",
+  "headers": {
+    "from": "Payroll Support <payroll@payroll-help.example>",
+    "to": "employee@company.com",
+    "subject": "Payroll verification required",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "payroll@payroll-help.example"
+  },
+  "body_text": "Dear employee,\n\nScan the QR code to verify your payroll password within 24 hours or your salary payment will be suspended.\n\nPayroll Support Team",
+  "body_html": null,
+  "links": [],
+  "attachments": [],
+  "images": [
+    {
+      "filename": "payroll_qr.png",
+      "mime_type": "image/png",
+      "ocr_text": "Scan to verify payroll password within 24 hours",
+      "qr_payload": "http://198.51.100.23/",
+      "detected_brands": []
+    }
+  ]
+}

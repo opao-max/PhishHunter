@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='2' fill='%23ffffff' stroke='%23333333'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='13' fill='%23222222' text-anchor='middle'%3EPH%3C/text%3E%3C/svg%3E">
+<title>PhishHunter 钓鱼邮件检测系统</title>
+<style>
+  :root {
+    --bg: #f5f5f5;
+    --panel: #ffffff;
+    --panel-head: #f7f7f7;
+    --border: #d9d9d9;
+    --border-soft: #e8e8e8;
+    --text: #111111;
+    --text-soft: #444444;
+    --muted: #767676;
+    --black: #222222;
+    --sans: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+    --mono: Consolas, "Courier New", monospace;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #e5e5e5; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 56px;
+    padding: 8px 24px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand-mark {
+    width: 32px; height: 32px; flex: 0 0 auto;
+    display: grid; place-items: center;
+    border: 1px solid #333;
+    border-radius: 2px;
+    color: #222;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 12px;
+    background: #fff;
+  }
+  .brand h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .brand p {
+    margin: 1px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .top-status { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+  .top-status strong { color: var(--text-soft); font-weight: 600; }
+
+  .layout {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 16px 24px 24px;
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    min-width: 0;
+  }
+  .layout > * { min-width: 0; }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    min-width: 0;
+  }
+  .input-panel { padding: 14px; }
+  .result-panel { display: flex; flex-direction: column; min-height: 520px; }
+
+  .panel-title {
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .input-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    min-width: 0;
+  }
+  .field-label {
+    display: block;
+    margin: 0 0 5px;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  select, textarea {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+  }
+  select {
+    height: 30px;
+    padding: 0 7px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: #fff;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  select:focus, textarea:focus { outline: none; border-color: #888; }
+  #email-input {
+    width: 100%;
+    height: 310px;
+    min-height: 160px;
+    resize: vertical;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+    tab-size: 2;
+  }
+  .hint { margin: 7px 0 10px; font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 30px;
+    padding: 0 13px;
+    border: 1px solid #333;
+    border-radius: 2px;
+    font-family: var(--sans);
+    font-size: 13px;
+    cursor: pointer;
+    background: #fff;
+    color: #222;
+    white-space: nowrap;
+  }
+  .btn:hover { background: #f2f2f2; }
+  .btn-primary { background: #222; border-color: #222; color: #fff; }
+  .btn-primary:hover { background: #000; }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  #analyze-btn { width: 100%; margin-top: 2px; }
+  .spinner {
+    width: 12px; height: 12px;
+    border: 2px solid rgba(255,255,255,0.45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .alert {
+    margin: 0 0 9px;
+    padding: 7px 9px;
+    border: 1px solid #c9c9c9;
+    background: #f7f7f7;
+    color: #222;
+    border-radius: 2px;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+  }
+
+  .empty-state { padding: 110px 24px; text-align: center; color: var(--muted); }
+  .empty-state .title { color: var(--text-soft); font-size: 14px; margin-bottom: 5px; }
+  .empty-state p { margin: 0; font-size: 12.5px; }
+
+  .result-head {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .result-head .head-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .result-head h2 { margin: 0; font-size: 14px; font-weight: 600; }
+  .result-subject { margin-top: 3px; font-size: 13px; color: var(--text); word-break: break-all; }
+  .result-sender { margin-top: 1px; font-size: 12px; color: var(--muted); word-break: break-all; }
+
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .summary-table th, .summary-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-soft);
+    text-align: left;
+    vertical-align: middle;
+  }
+  .summary-table tr:last-child th, .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table th {
+    width: 82px;
+    color: var(--muted);
+    font-weight: 400;
+    background: #fafafa;
+    white-space: nowrap;
+  }
+  .summary-table td { color: var(--text); }
+  .summary-table td.value-strong { font-weight: 700; }
+  .summary-table td.value-mono { font-family: var(--mono); }
+
+  .tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    appearance: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    padding: 9px 12px 8px;
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: #222; font-weight: 600; }
+  .tab .tab-count { color: var(--muted); font-weight: 400; margin-left: 2px; }
+
+  .tab-panel {
+    padding: 12px 16px 16px;
+    max-height: calc(100vh - 330px);
+    overflow-y: auto;
+    min-height: 280px;
+  }
+  .tab-panel.no-scroll { max-height: none; overflow: visible; }
+
+  .tab-panel h3 {
+    margin: 14px 0 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .tab-panel h3:first-child { margin-top: 0; }
+  .summary-text { margin: 0 0 4px; color: var(--text-soft); font-size: 13px; line-height: 1.75; }
+  .plain-list { margin: 0; padding-left: 18px; color: var(--text-soft); font-size: 12.5px; }
+  .plain-list li { margin: 3px 0; line-height: 1.65; }
+  .empty-text { color: var(--muted); font-size: 12.5px; }
+
+  .table-wrap { width: 100%; max-width: 100%; overflow-x: auto; }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .data-table th, .data-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border-soft);
+    text-align: left;
+    vertical-align: top;
+  }
+  .data-table th {
+    background: var(--panel-head);
+    color: var(--text-soft);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table .col-id { font-family: var(--mono); white-space: nowrap; color: var(--text-soft); }
+  .data-table .col-cat { white-space: nowrap; color: var(--text-soft); }
+  .data-table .col-num { font-family: var(--mono); white-space: nowrap; text-align: right; }
+  .data-table .col-pol { white-space: nowrap; }
+
+  details.evidence-details summary {
+    cursor: pointer;
+    color: var(--text);
+    font-weight: 600;
+    list-style-position: outside;
+  }
+  details.evidence-details .ev-detail {
+    margin: 5px 0 2px;
+    color: var(--text-soft);
+    font-weight: 400;
+    line-height: 1.65;
+    word-break: break-word;
+  }
+  details.evidence-details .ev-meta {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11.5px;
+    font-weight: 400;
+    word-break: break-all;
+  }
+
+  .kv-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .kv-table th, .kv-table td {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border-soft);
+    text-align: left;
+  }
+  .kv-table th { color: var(--muted); font-weight: 400; width: 60%; }
+  .kv-table td { font-family: var(--mono); text-align: right; color: var(--text); }
+  .kv-table tr:last-child th, .kv-table tr:last-child td { border-bottom: none; }
+  .kv-table tr.kv-strong td { font-weight: 700; }
+  .note-item {
+    padding: 5px 8px;
+    margin: 5px 0;
+    border-left: 2px solid #999;
+    background: #fafafa;
+    color: var(--text-soft);
+    font-size: 12px;
+  }
+  .floor-details { margin-top: 7px; font-size: 12px; color: var(--muted); }
+  .floor-details summary { cursor: pointer; color: var(--text-soft); }
+  .floor-details .note-item { margin: 4px 0; }
+
+  .table-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .filter-btn {
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text-soft);
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: var(--sans);
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .filter-btn.active { background: #222; border-color: #222; color: #fff; }
+
+  .tool-title { font-weight: 600; color: var(--text); }
+  .tool-meta { color: var(--muted); font-size: 11.5px; margin-top: 2px; word-break: break-all; }
+  .tool-meta pre {
+    margin: 4px 0 0;
+    padding: 6px 8px;
+    background: #fafafa;
+    border: 1px solid var(--border-soft);
+    border-radius: 2px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  details summary { cursor: pointer; color: var(--text-soft); font-size: 11.5px; }
+
+  .pipeline-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .pipeline-table th, .pipeline-table td {
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border-soft);
+    text-align: left;
+    vertical-align: top;
+  }
+  .pipeline-table th { background: var(--panel-head); color: var(--text-soft); font-weight: 600; }
+  .pipeline-phase { font-family: var(--mono); white-space: nowrap; color: var(--text-soft); }
+
+  #raw-report {
+    margin: 0;
+    padding: 10px;
+    background: #fafafa;
+    border: 1px solid var(--border-soft);
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.55;
+    overflow: auto;
+    max-height: calc(100vh - 390px);
+  }
+
+  .footer {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 24px 20px;
+    color: var(--muted);
+    font-size: 11.5px;
+  }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+    .topbar { padding: 8px 14px; align-items: flex-start; flex-direction: column; gap: 6px; }
+    #email-input { height: 200px; }
+    .tab-panel { max-height: none; overflow: visible; min-height: 0; }
+    #raw-report { max-height: 50vh; }
+    .footer { padding: 0 12px 16px; }
+  }
+  @media (max-width: 520px) {
+    .brand h1 { font-size: 15px; }
+    .summary-table th { width: 70px; }
+    .summary-table th, .summary-table td { padding: 5px 7px; }
+    .tabs { padding: 0 4px; }
+    .tab { padding: 8px 8px 7px; }
+    .tab-panel { padding: 10px 12px 12px; }
+    .input-toolbar { flex-wrap: wrap; }
+    select { flex-basis: 100%; }
+    #clear-btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">PH</div>
+    <div>
+      <h1>PhishHunter 钓鱼邮件检测系统</h1>
+      <p>邮件安全分析与管理</p>
+    </div>
+  </div>
+  <div class="top-status">
+    <span>运行状态：<strong id="health-badge">检测中</strong></span>
+    <span>版本 <strong>1.0.0</strong></span>
+  </div>
+</header>
+
+<main class="layout">
+  <aside class="panel input-panel">
+    <h2 class="panel-title">邮件输入</h2>
+    <div class="input-toolbar">
+      <select id="sample-select" aria-label="选择内置样例">
+        <option value="">选择内置样例…</option>
+      </select>
+      <button id="clear-btn" class="btn" type="button">清空</button>
+    </div>
+    <label class="field-label" for="email-input">邮件 JSON</label>
+    <textarea id="email-input" spellcheck="false" autocomplete="off"
+      placeholder='在此粘贴邮件 JSON，例如：&#10;{&#10;  "id": "email_001",&#10;  "headers": {&#10;    "from": "support@example.com",&#10;    "subject": "邮件主题"&#10;  },&#10;  "body_text": "邮件正文"&#10;}'></textarea>
+    <div id="input-hint" class="hint">支持完整邮件对象或 {"email": {...}} 包装；Ctrl / Cmd + Enter 可快速分析。</div>
+    <div id="input-error" class="alert" role="alert" hidden></div>
+    <button id="analyze-btn" class="btn btn-primary" type="button">
+      <span id="analyze-spinner" class="spinner" hidden></span>
+      <span id="analyze-label">开始分析</span>
+    </button>
+  </aside>
+
+  <section class="panel result-panel">
+    <div id="empty-state" class="empty-state">
+      <div class="title">尚未分析</div>
+      <p>选择左侧样例或粘贴邮件 JSON，然后点击“开始分析”。</p>
+    </div>
+
+    <div id="result" hidden>
+      <div class="result-head">
+        <div class="head-line">
+          <h2>分析结果</h2>
+          <span class="result-sender" id="engine-badge">运行模式：待分析</span>
+        </div>
+        <div class="result-subject" id="result-subject">--</div>
+        <div class="result-sender" id="result-sender">--</div>
+      </div>
+
+      <table class="summary-table">
+        <tr>
+          <th>处置建议</th>
+          <td id="action-badge" class="value-strong">--</td>
+          <th>风险评分</th>
+          <td id="score-value" class="value-mono">--</td>
+        </tr>
+        <tr>
+          <th>风险等级</th>
+          <td id="risk-level">--</td>
+          <th>置信度</th>
+          <td id="metric-confidence" class="value-mono">--</td>
+        </tr>
+        <tr>
+          <th>证据数量</th>
+          <td id="metric-evidence" class="value-mono">--</td>
+          <th>分析耗时</th>
+          <td id="metric-latency" class="value-mono">--</td>
+        </tr>
+        <tr>
+          <th>提示注入</th>
+          <td id="metric-injection">--</td>
+          <th>邮件 ID</th>
+          <td id="metric-email-id" class="value-mono">--</td>
+        </tr>
+      </table>
+
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" data-tab="overview" role="tab">概览</button>
+        <button type="button" class="tab" data-tab="evidence" role="tab">证据链 <span class="tab-count" id="evidence-count"></span></button>
+        <button type="button" class="tab" data-tab="reasoning" role="tab">推理 <span class="tab-count" id="reasoning-count"></span></button>
+        <button type="button" class="tab" data-tab="tools" role="tab">工具与流程</button>
+        <button type="button" class="tab" data-tab="raw" role="tab">原始数据</button>
+      </div>
+
+      <div class="tab-panel" id="tab-overview" role="tabpanel">
+        <h3>结论摘要</h3>
+        <p id="summary" class="summary-text"></p>
+        <h3>处置建议</h3>
+        <ul id="recommended" class="plain-list"></ul>
+        <h3>评分明细</h3>
+        <table class="kv-table" id="breakdown"></table>
+        <details id="floor-details" class="floor-details" hidden>
+          <summary id="floor-summary">策略下限说明</summary>
+          <div id="floor-reasons"></div>
+        </details>
+        <h3>关键证据</h3>
+        <div class="table-wrap">
+          <table class="data-table" id="key-evidence">
+            <thead><tr><th>编号</th><th>类别</th><th>证据</th><th>严重度 / 置信度</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <h3>冲突与备注</h3>
+        <ul id="conflicts" class="plain-list"></ul>
+        <ul id="notes" class="plain-list"></ul>
+      </div>
+
+      <div class="tab-panel" id="tab-evidence" role="tabpanel" hidden>
+        <div class="table-toolbar">
+          <span>共 <span id="evidence-total">0</span> 条</span>
+          <button type="button" class="filter-btn active" data-filter="all">全部</button>
+          <button type="button" class="filter-btn" data-filter="risk">风险</button>
+          <button type="button" class="filter-btn" data-filter="mitigating">缓解</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="evidence-list">
+            <thead><tr><th>编号</th><th>类别</th><th>证据内容</th><th>严重度</th><th>置信度</th><th>性质</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-reasoning" role="tabpanel" hidden>
+        <ol id="reasoning" class="plain-list"></ol>
+      </div>
+
+      <div class="tab-panel" id="tab-tools" role="tabpanel" hidden>
+        <h3>工具调用 <span class="tab-count" id="tool-count"></span></h3>
+        <div id="tool-calls"></div>
+        <h3>执行流程</h3>
+        <div id="pipeline"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-raw" role="tabpanel" hidden>
+        <pre id="raw-report"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  PhishHunter 1.0 · 所有结论可追溯至证据编号或工具返回结果 · 默认离线运行，不访问邮件中的链接
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var CATEGORY_LABELS = {
+    header_auth: "邮件认证",
+    sender_identity: "发件人身份",
+    url: "链接",
+    attachment: "附件",
+    content: "正文语义",
+    image: "图片/二维码",
+    prompt_injection: "提示注入",
+    threat_intel: "威胁情报"
+  };
+  var ACTION_LABELS = { Block: "阻断", Quarantine: "隔离", Allow: "放行" };
+  var RISK_LABELS = { Critical: "严重", High: "高", Medium: "中", Low: "低" };
+  var PHASE_LABELS = {
+    perceive: "PERCEIVE 感知",
+    plan: "PLAN 规划",
+    act: "ACT 行动",
+    judge: "JUDGE 判断",
+    report: "REPORT 报告"
+  };
+
+  var state = { loading: false, samples: [], requestSeq: 0, report: null, evidenceFilter: "all" };
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+  function clear(node) { while (node && node.firstChild) node.removeChild(node.firstChild); }
+  function fmt(value, digits) {
+    var num = Number(value);
+    return isFinite(num) ? num.toFixed(digits === undefined ? 1 : digits) : "--";
+  }
+  function fmtLatency(value) {
+    var num = Number(value);
+    return isFinite(num) ? num.toFixed(1) + " ms" : "n/a";
+  }
+  function errorMessage(err) { return err && err.message ? err.message : String(err || "未知错误"); }
+
+  function resetResult() {
+    state.requestSeq += 1;
+    state.report = null;
+    state.evidenceFilter = "all";
+    $("result").hidden = true;
+    $("empty-state").hidden = false;
+    $("engine-badge").textContent = "运行模式：待分析";
+    showTab("overview");
+  }
+  function showError(message) { var b = $("input-error"); b.textContent = message; b.hidden = false; }
+  function clearError() { var b = $("input-error"); b.textContent = ""; b.hidden = true; }
+  function setLoading(loading) {
+    state.loading = loading;
+    $("analyze-btn").disabled = loading;
+    $("analyze-spinner").hidden = !loading;
+    $("analyze-label").textContent = loading ? "分析中…" : "开始分析";
+    $("email-input").readOnly = loading;
+    $("sample-select").disabled = loading;
+    $("clear-btn").disabled = loading;
+  }
+
+  function fetchJSON(url, options) {
+    return fetch(url, options).then(function (response) {
+      return response.text().then(function (text) {
+        var data = null;
+        if (text) { try { data = JSON.parse(text); } catch (e) { data = null; } }
+        if (!response.ok) {
+          var detail = data && (data.detail || data.message);
+          throw new Error(detail || ("HTTP " + response.status));
+        }
+        return data;
+      });
+    });
+  }
+
+  function checkHealth() {
+    fetchJSON("/api/health").then(function (data) {
+      $("health-badge").textContent = "正常";
+      if (data && data.version) {
+        var version = document.querySelector(".top-status span:last-child strong");
+        if (version) version.textContent = data.version;
+      }
+    }).catch(function () { $("health-badge").textContent = "异常"; });
+  }
+
+  function loadSamples() {
+    fetchJSON("/api/samples?include_email=true").then(function (data) {
+      state.samples = Array.isArray(data) ? data : [];
+      var select = $("sample-select");
+      clear(select);
+      select.appendChild(new Option("选择内置样例…", ""));
+      state.samples.forEach(function (sample) {
+        var label = sample.label === "phishing" ? "钓鱼" : sample.label === "legit" ? "正常" : "样本";
+        var text = label + " · " + (sample.subject || sample.id);
+        select.appendChild(new Option(text, sample.id));
+      });
+    }).catch(function () {});
+  }
+
+  function onSampleChange() {
+    var id = $("sample-select").value;
+    if (!id) return;
+    var sample = null;
+    for (var i = 0; i < state.samples.length; i += 1) {
+      if (String(state.samples[i].id) === String(id)) { sample = state.samples[i]; break; }
+    }
+    if (!sample || !sample.email) { showError("该样例未提供完整邮件内容。"); return; }
+    $("email-input").value = JSON.stringify(sample.email, null, 2);
+    resetResult();
+    clearError();
+  }
+
+  function showTab(name) {
+    var tabs = document.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i += 1) {
+      var active = tabs[i].getAttribute("data-tab") === name;
+      tabs[i].classList.toggle("active", active);
+    }
+    var panels = document.querySelectorAll(".tab-panel");
+    for (var j = 0; j < panels.length; j += 1) {
+      panels[j].hidden = panels[j].id !== "tab-" + name;
+    }
+  }
+
+  function renderHeader(report) {
+    var action = String(report.action || "--");
+    $("action-badge").textContent = ACTION_LABELS[action] || action;
+    $("action-badge").style.fontWeight = action === "Block" ? "700" : action === "Quarantine" ? "600" : "500";
+    $("score-value").textContent = fmt(report.risk_score, 1) + " / 100";
+    $("risk-level").textContent = RISK_LABELS[report.risk_level] || report.risk_level || "--";
+    $("result-subject").textContent = report.subject || "（无主题）";
+    $("result-sender").textContent = report.sender || "（未知发件人）";
+    $("metric-confidence").textContent = fmt(report.confidence, 2);
+    $("metric-evidence").textContent = String((report.evidence_chain || []).length);
+    $("metric-latency").textContent = fmtLatency(report.latency_ms);
+    $("metric-injection").textContent = report.injection_detected ? "已检测（仅作为证据）" : "未发现";
+    $("metric-email-id").textContent = report.email_id || "--";
+
+    var engine = report.engine || {};
+    var provider = engine.llm_provider || "none";
+    var offline = engine.mode === "offline-mock" || provider === "mock" || provider === "none";
+    $("engine-badge").textContent = "运行模式：" +
+      (offline ? "离线规则" : "模型协同 · " + provider);
+  }
+
+  function kvRow(label, value, strong) {
+    var tr = document.createElement("tr");
+    if (strong) tr.className = "kv-strong";
+    tr.appendChild(el("th", "", label));
+    tr.appendChild(el("td", "", value));
+    return tr;
+  }
+
+  function renderBreakdown(report) {
+    var b = report.score_breakdown || {};
+    var table = $("breakdown");
+    clear(table);
+    table.appendChild(kvRow("原始证据分", fmt(b.raw_score, 1)));
+    table.appendChild(kvRow("缓解扣减", "−" + fmt(b.mitigation_points, 1)));
+    table.appendChild(kvRow("策略下限", b.floor === null || b.floor === undefined ? "无" : fmt(b.floor, 1)));
+    table.appendChild(kvRow("下限后 / 模型调分前", fmt(b.pre_llm_score, 1)));
+    table.appendChild(kvRow("模型调整", (Number(b.llm_adjustment) >= 0 ? "+" : "") + fmt(b.llm_adjustment, 1)));
+    table.appendChild(kvRow("最终得分", fmt(b.final_score, 1) + " / 100", true));
+
+    var reasons = $("floor-reasons");
+    clear(reasons);
+    var floorReasons = b.floor_reasons || [];
+    var floorDetails = $("floor-details");
+    floorDetails.hidden = !floorReasons.length;
+    $("floor-summary").textContent = "策略下限说明（" + floorReasons.length + "）";
+    floorReasons.forEach(function (reason) {
+      reasons.appendChild(el("div", "note-item", "策略下限：" + reason));
+    });
+  }
+
+  function evidenceMatches(item) {
+    if (state.evidenceFilter === "risk") return item.polarity !== "mitigating";
+    if (state.evidenceFilter === "mitigating") return item.polarity === "mitigating";
+    return true;
+  }
+
+  function renderEvidence(report) {
+    var evidence = report.evidence_chain || [];
+    $("evidence-count").textContent = "(" + evidence.length + ")";
+    $("evidence-total").textContent = String(evidence.length);
+    var tbody = document.querySelector("#evidence-list tbody");
+    clear(tbody);
+    var shown = 0;
+    evidence.forEach(function (item) {
+      if (!evidenceMatches(item)) return;
+      shown += 1;
+      var tr = document.createElement("tr");
+      tr.appendChild(el("td", "col-id", item.id || "-"));
+      tr.appendChild(el("td", "col-cat", CATEGORY_LABELS[item.category] || item.category || "-"));
+
+      var cell = document.createElement("td");
+      var details = document.createElement("details");
+      details.className = "evidence-details";
+      details.appendChild(el("summary", "", item.title || "-"));
+      if (item.detail) details.appendChild(el("div", "ev-detail", item.detail));
+      var meta = [];
+      if (item.source) meta.push("来源：" + item.source);
+      if (item.tags && item.tags.length) meta.push("标签：" + item.tags.join("、"));
+      if (meta.length) details.appendChild(el("div", "ev-meta", meta.join("　")));
+      cell.appendChild(details);
+      tr.appendChild(cell);
+
+      tr.appendChild(el("td", "col-num", fmt(item.severity, 2)));
+      tr.appendChild(el("td", "col-num", fmt(item.confidence, 2)));
+      tr.appendChild(el("td", "col-pol", item.polarity === "mitigating" ? "缓解" : "风险"));
+      tbody.appendChild(tr);
+    });
+    if (!shown) {
+      var tr = document.createElement("tr");
+      var td = el("td", "empty-text", "当前筛选条件下无证据。");
+      td.colSpan = 6;
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    }
+  }
+
+  function renderKeyEvidence(report) {
+    var tbody = document.querySelector("#key-evidence tbody");
+    clear(tbody);
+    var risks = (report.evidence_chain || []).filter(function (item) {
+      return item.polarity !== "mitigating";
+    });
+    risks.sort(function (a, b) {
+      return (Number(b.severity) * Number(b.confidence)) - (Number(a.severity) * Number(a.confidence));
+    });
+    risks.slice(0, 5).forEach(function (item) {
+      var tr = document.createElement("tr");
+      tr.appendChild(el("td", "col-id", item.id || "-"));
+      tr.appendChild(el("td", "col-cat", CATEGORY_LABELS[item.category] || item.category || "-"));
+      tr.appendChild(el("td", "", item.title || "-"));
+      tr.appendChild(el("td", "col-num", fmt(item.severity, 2) + " / " + fmt(item.confidence, 2)));
+      tbody.appendChild(tr);
+    });
+    if (!risks.length) {
+      var tr = document.createElement("tr");
+      var td = el("td", "empty-text", "无风险证据。");
+      td.colSpan = 4;
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+    }
+  }
+
+  function renderReasoning(report) {
+    var list = $("reasoning");
+    clear(list);
+    var steps = report.reasoning_steps || [];
+    $("reasoning-count").textContent = "(" + steps.length + ")";
+    steps.forEach(function (step) { list.appendChild(el("li", "", step)); });
+    if (!steps.length) list.appendChild(el("li", "empty-text", "无推理步骤。"));
+  }
+
+  function renderToolCalls(report) {
+    var calls = report.tool_calls || [];
+    $("tool-count").textContent = "(" + calls.length + ")";
+    var box = $("tool-calls");
+    clear(box);
+    if (!calls.length) { box.appendChild(el("div", "empty-text", "未调用外部工具。")); return; }
+    var wrap = el("div", "table-wrap");
+    var table = el("table", "data-table");
+    var thead = document.createElement("thead");
+    var hr = document.createElement("tr");
+    ["编号", "工具", "状态", "耗时", "调用原因 / 返回摘要"].forEach(function (text) { hr.appendChild(el("th", "", text)); });
+    thead.appendChild(hr); table.appendChild(thead);
+    var tbody = document.createElement("tbody");
+    calls.forEach(function (call) {
+      var tr = document.createElement("tr");
+      tr.appendChild(el("td", "col-id", call.id || "-"));
+      tr.appendChild(el("td", "col-cat", call.tool || "-"));
+      tr.appendChild(el("td", "", call.ok ? "成功" : "失败"));
+      tr.appendChild(el("td", "col-num", fmt(call.latency_ms, 1) + " ms"));
+      var cell = document.createElement("td");
+      cell.appendChild(el("div", "", call.reason || ""));
+      if (call.error) cell.appendChild(el("div", "tool-meta", "错误：" + call.error));
+      if (call.evidence_ids && call.evidence_ids.length) {
+        cell.appendChild(el("div", "tool-meta", "关联证据：" + call.evidence_ids.join("、")));
+      }
+      if (call.data_summary && Object.keys(call.data_summary).length) {
+        var details = document.createElement("details");
+        details.appendChild(el("summary", "", "查看返回摘要"));
+        var pre = document.createElement("pre");
+        pre.textContent = JSON.stringify(call.data_summary, null, 2);
+        details.appendChild(pre);
+        cell.appendChild(details);
+      }
+      tr.appendChild(cell);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody); wrap.appendChild(table); box.appendChild(wrap);
+  }
+
+  function renderPipeline(report) {
+    var steps = report.analysis_steps || [];
+    var box = $("pipeline");
+    clear(box);
+    if (!steps.length) { box.appendChild(el("div", "empty-text", "无执行记录。")); return; }
+    var wrap = el("div", "table-wrap");
+    var table = el("table", "pipeline-table");
+    var thead = document.createElement("thead");
+    var hr = document.createElement("tr");
+    ["阶段", "步骤", "说明", "耗时"].forEach(function (text) { hr.appendChild(el("th", "", text)); });
+    thead.appendChild(hr); table.appendChild(thead);
+    var tbody = document.createElement("tbody");
+    steps.forEach(function (step) {
+      var tr = document.createElement("tr");
+      tr.appendChild(el("td", "pipeline-phase", PHASE_LABELS[step.phase] || step.phase || "-"));
+      tr.appendChild(el("td", "", step.title || "-"));
+      tr.appendChild(el("td", "tool-meta", step.detail || ""));
+      tr.appendChild(el("td", "col-num", fmt(step.elapsed_ms, 1) + " ms"));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody); wrap.appendChild(table); box.appendChild(wrap);
+  }
+
+  function renderList(id, values, emptyText) {
+    var list = $(id);
+    clear(list);
+    var items = Array.isArray(values) ? values : [];
+    items.forEach(function (value) { list.appendChild(el("li", "", value)); });
+    if (!items.length) list.appendChild(el("li", "empty-text", emptyText));
+  }
+
+  function renderReport(report) {
+    state.report = report;
+    renderHeader(report);
+    $("summary").textContent = report.summary || "无摘要。";
+    renderList("recommended", report.recommended_actions || [], "无额外处置建议。");
+    renderBreakdown(report);
+    renderKeyEvidence(report);
+    renderList("conflicts", report.conflicts || [], "无冲突。");
+    renderList("notes", report.notes || [], "无备注。");
+    renderEvidence(report);
+    renderReasoning(report);
+    renderToolCalls(report);
+    renderPipeline(report);
+    $("raw-report").textContent = JSON.stringify(report, null, 2);
+    $("empty-state").hidden = true;
+    $("result").hidden = false;
+    showTab("overview");
+  }
+
+  function analyze() {
+    if (state.loading) return;
+    clearError();
+    var raw = $("email-input").value.trim();
+    if (!raw) { showError("请先粘贴邮件 JSON 或选择左侧样例。"); return; }
+    var payload;
+    try { payload = JSON.parse(raw); } catch (err) { showError("JSON 解析失败：" + errorMessage(err)); return; }
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+      showError("JSON 顶层必须是邮件对象。"); return;
+    }
+    setLoading(true);
+    var seq = ++state.requestSeq;
+    fetchJSON("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function (report) {
+      if (seq !== state.requestSeq) return;
+      renderReport(report);
+    }).catch(function (err) {
+      if (seq !== state.requestSeq) return;
+      showError("分析失败：" + errorMessage(err));
+    }).then(function () {
+      if (seq === state.requestSeq) setLoading(false);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    $("analyze-btn").addEventListener("click", analyze);
+    $("sample-select").addEventListener("change", onSampleChange);
+    $("clear-btn").addEventListener("click", function () {
+      $("email-input").value = "";
+      $("sample-select").value = "";
+      resetResult();
+      clearError();
+      $("email-input").focus();
+    });
+    $("email-input").addEventListener("input", clearError);
+    $("email-input").addEventListener("keydown", function (event) {
+      if ((event.ctrlKey || event.metaKey) && event.key === "Enter") { event.preventDefault(); analyze(); }
+    });
+
+    var tabs = document.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i += 1) {
+      tabs[i].addEventListener("click", function () { showTab(this.getAttribute("data-tab")); });
+    }
+    var filters = document.querySelectorAll(".filter-btn");
+    for (var j = 0; j < filters.length; j += 1) {
+      filters[j].addEventListener("click", function () {
+        for (var k = 0; k < filters.length; k += 1) filters[k].classList.remove("active");
+        this.classList.add("active");
+        state.evidenceFilter = this.getAttribute("data-filter");
+        if (state.report) renderEvidence(state.report);
+      });
+    }
+    checkHealth();
+    loadSamples();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "id": "email_010",
+  "headers": {
+    "from": "Acme Supplies Billing <billing@acme-supplies.example>",
+    "to": "procurement@company.com",
+    "subject": "Invoice INV-2026-1019 from Acme Supplies",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "billing@acme-supplies.example"
+  },
+  "body_text": "Dear Procurement Team,\n\nAttached is invoice INV-2026-1019 for office supplies delivered on 2026-10-12. Payment terms are net 30. You can also download the document from our customer portal: https://portal.acme-supplies.example/docs/2026-1019\n\nThank you,\nAcme Supplies Billing",
+  "links": [
+    {
+      "original": "https://portal.acme-supplies.example/docs/2026-1019",
+      "resolved": "",
+      "anchor_text": "customer portal"
+    }
+  ],
+  "attachments": [
+    {
+      "filename": "Invoice_INV-2026-1019.pdf",
+      "hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "mime_type": "application/pdf",
+      "size_bytes": 98211
+    }
+  ],
+  "label": "legit",
+  "expected_action": "Allow",
+  "notes": "正常供应商发票：老域名、认证通过，PDF 附件哈希干净，链接为供应商门户；用于验证附件误报控制。"
+}

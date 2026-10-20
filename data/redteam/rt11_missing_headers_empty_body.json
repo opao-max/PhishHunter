@@ -1,0 +1,13 @@
+{
+  "id": "rt11_missing_headers_empty_body",
+  "label": "phishing",
+  "expected_action": "Quarantine",
+  "redteam_focus": "missing From/To headers and an empty body",
+  "notes": "No headers and no body. The agent should not crash, but an email whose sender cannot be identified at all should not be silently allowed.",
+  "headers": {},
+  "body_text": "",
+  "body_html": "",
+  "links": [],
+  "attachments": [],
+  "images": []
+}

@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-10-20T10:14:19.237463+00:00",
+  "endpoint": "http://127.0.0.1:15721",
+  "model_requested": "claude-sonnet-4-6[1M]",
+  "provider": "anthropic-compatible local proxy",
+  "note": "Key intentionally not stored. The local proxy maps the requested Claude model name to the upstream model configured by the operator.",
+  "runs": [
+    {
+      "sample": "email_001",
+      "action": "Block",
+      "risk_score": 95.0,
+      "risk_level": "Critical",
+      "engine": {
+        "version": "1.0.0",
+        "mode": "hybrid-llm",
+        "llm_provider": "anthropic",
+        "llm_model": "claude-sonnet-4-6[1M]",
+        "llm_active": true,
+        "planner": "heuristic",
+        "planner_requested": "heuristic",
+        "intel": "mock",
+        "thresholds": {
+          "block": 70,
+          "quarantine": 40
+        },
+        "tool_budget": 12
+      },
+      "latency_ms": 10578.95,
+      "evidence_count": 15,
+      "reasoning_steps": 17,
+      "cited": [
+        "模型综合：发件域 micr0soft-security.com 注册仅 0.3 天并被 8 个引擎标记为 phishing，属典型新注册钓鱼基础设施 [E006][E007]，且用同形字“micr0soft”仿冒 Microsoft，显示名与真实归属不符 [E002][E008]。",
+        "模型综合：邮件身份认证链完全失败：SPF=fail、DKIM=none、DMARC=fail，且该域 SPF 记录缺失或无效，无法约束发件服务器 [E001][E009]，与品牌仿冒结论相互印证。",
+        "模型综合：正文命中“account will be locked”“will expire”“immediately”“urgent”等紧迫威胁话术，并出现“password”等凭据诱导语言 [E003][E004]。"
+      ],
+      "conflicts": [
+        "E014 将 bit.ly 标记为 mitigating（注册 16.4 年、无恶意记录），但该短链在本次事件中被用于跳转至恶意凭据窃取页面 [E005][E011]，故不构成对整体风险的实质性抵消。",
+        "E010/E012/E005 中出现的 192.168.1.15 属私有/保留地址段，说明该落地地址为沙箱或受控环境中的复现地址，但恶意 URL 与凭据窃取的判定仍以威胁情报与沙箱结果为准。"
+      ],
+      "notes": [],
+      "summary": "该邮件是一封高度可信的钓鱼邮件：发件域 micr0soft-security.com 仅注册 0.3 天且被 8 个引擎判定为恶意，并以同形字仿冒 Microsoft 品牌 [E006][E007][E002]；邮件身份认证全面失败（SPF=fail、DKIM=none、DMARC=fail，且域名缺少有效 SPF 记录）[E001][E009]。正文使用“密码 2 小时后过期、账户将被锁定”等紧迫性话术 [E003]，链接 http://bit.ly/3xYz 经短链跳转至裸 IP http://192.168.1.15/login.php，采用明文 HTTP、路径含 login 关键词，被 12 个引擎判定为恶意 [E011][E005][E010]，沙箱进一步确认该页面存在密码输入表单并提交凭据，属凭据窃取 [E012][E013]。该邮件与历史“Microsoft 密码过期钓鱼”活动相似度 72% [E015]。bit.ly 域名注册时间长仅说明短链服务本身未被标记，不能为落地页开脱 [E014]。综合判定为凭据钓鱼，建议分数与确定性分数保持一致（95）。"
+    },
+    {
+      "sample": "email_007",
+      "action": "Allow",
+      "risk_score": 0.0,
+      "risk_level": "Low",
+      "engine": {
+        "version": "1.0.0",
+        "mode": "hybrid-llm",
+        "llm_provider": "anthropic",
+        "llm_model": "claude-sonnet-4-6[1M]",
+        "llm_active": true,
+        "planner": "heuristic",
+        "planner_requested": "heuristic",
+        "intel": "mock",
+        "thresholds": {
+          "block": 70,
+          "quarantine": 40
+        },
+        "tool_budget": 12
+      },
+      "latency_ms": 6197.78,
+      "evidence_count": 5,
+      "reasoning_steps": 8,
+      "cited": [
+        "模型综合：认证链完整：SPF 通过、DKIM 通过、DMARC=pass，说明发件身份具备可验证的认证链，冒充可能性很低 [E001]。",
+        "模型综合：该域已发布有效 SPF 与 DMARC（p=reject）并配置 DKIM，说明域名所有者具备完善的邮件认证治理能力 [E003]。",
+        "模型综合：正文唯一 URL https://company.com/wiki/q3-review 未被任何引擎判定为恶意，且已存在约 2.5 年 [E004]。"
+      ],
+      "conflicts": [],
+      "notes": [],
+      "summary": "该邮件为发件域 company.com 的内部会议通知，SPF、DKIM、DMARC 三项认证全部通过（[E001]），发件域已注册约 11.3 年且无恶意情报记录（[E002]），并已发布 SPF 与 DMARC p=reject 策略（[E003]）；正文唯一链接 https://company.com/wiki/q3-review 信誉良好、存在约 2.5 年且沙箱未发现登录表单、凭据请求或下载行为（[E004][E005]）。全部证据均为缓解性，无任何已知恶意 URL、凭据窃取或品牌仿冒迹象，邮件正文也未出现试图操纵分析流程的指令。综合判定风险极低，与确定性评分 0.0 一致。"
+    }
+  ],
+  "regenerated_at": "2026-10-20T10:15:44.394848+00:00"
+}

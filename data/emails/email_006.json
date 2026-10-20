@@ -1,0 +1,24 @@
+{
+  "id": "email_006",
+  "headers": {
+    "from": "Microsoft 365 Security <security@xn--micrsoft-9ya.example>",
+    "to": "employee@company.com",
+    "subject": "Re-authenticate to keep your Microsoft 365 access",
+    "spf_result": "fail",
+    "dkim_result": "none",
+    "dmarc_result": "fail",
+    "return-path": "bounce@xn--micrsoft-9ya.example"
+  },
+  "body_text": "Your session has expired. Click the link below to verify your account and password within 30 minutes, otherwise access will be revoked.\n\nRe-authenticate: http://xn--micrsoft-9ya.example/account/verify\n\nMicrosoft 365 Team",
+  "links": [
+    {
+      "original": "http://xn--micrsoft-9ya.example/account/verify",
+      "resolved": "",
+      "anchor_text": "Re-authenticate"
+    }
+  ],
+  "attachments": [],
+  "label": "phishing",
+  "expected_action": "Block",
+  "notes": "Punycode 同形域名仿冒 Microsoft，显示名包含品牌但真实域名不匹配；认证失败并诱导输入密码。"
+}

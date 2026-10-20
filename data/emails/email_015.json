@@ -1,0 +1,25 @@
+{
+  "id": "email_015",
+  "headers": {
+    "from": "PayPal Seller Updates <updates@xn--pypal-4ve.com>",
+    "to": "employee@company.com",
+    "subject": "Updated seller policy for your review",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "updates@xn--pypal-4ve.com",
+    "reply-to": "updates@xn--pypal-4ve.com"
+  },
+  "body_text": "Hello,\n\nWe have updated the seller policy documentation for your account. You can review the changes at your convenience.\n\nhttps://xn--pypal-4ve.com/policy\n\nPayPal Seller Team",
+  "links": [
+    {
+      "original": "https://xn--pypal-4ve.com/policy",
+      "resolved": "",
+      "anchor_text": "review the updated policy"
+    }
+  ],
+  "attachments": [],
+  "label": "phishing",
+  "expected_action": "Quarantine",
+  "notes": "中风险校准样本：Punycode 仿冒 PayPal 域名，但正文没有凭据索取或紧迫威胁。预期进入隔离区由人工复核，而不是直接 Block；用于验证三档处置与阈值校准。"
+}

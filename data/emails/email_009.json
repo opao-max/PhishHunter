@@ -1,0 +1,24 @@
+{
+  "id": "email_009",
+  "headers": {
+    "from": "IT Service Desk <it-helpdesk@company.com>",
+    "to": "all-staff@company.com",
+    "subject": "【IT 通知】公司账号密码将在 14 天后到期",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "it-helpdesk@company.com"
+  },
+  "body_text": "您好，\n\n您的公司账号密码将在 14 天后到期。请在公司统一身份门户按正常流程修改密码：https://company.com/it/self-service/reset 。本邮件由 IT 服务台自动发送，如有问题请联系服务台（分机 8000）。\n\nIT 服务台",
+  "links": [
+    {
+      "original": "https://company.com/it/self-service/reset",
+      "resolved": "",
+      "anchor_text": "公司统一身份门户"
+    }
+  ],
+  "attachments": [],
+  "label": "legit",
+  "expected_action": "Allow",
+  "notes": "正常 IT 密码到期提醒：确实包含密码与到期话术，但发件域为公司自有老域名、SPF/DKIM/DMARC 全部通过，链接指向内部门户。用于验证低误报。"
+}

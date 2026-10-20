@@ -1,0 +1,26 @@
+{
+  "id": "rt10_double_extension_no_hash",
+  "label": "phishing",
+  "expected_action": "Block",
+  "redteam_focus": "double-extension attachment without a hash",
+  "notes": "Attachment is Statement_Oct.pdf.exe with no hash, so only static analysis can catch it.",
+  "headers": {
+    "from": "Accounts Receivable <ar@vendor-billing.example>",
+    "to": "ap@company.com",
+    "subject": "Statement OCT-2026",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass"
+  },
+  "body_text": "Please review the attached statement for your account. Contact us with any questions.",
+  "body_html": null,
+  "links": [],
+  "attachments": [
+    {
+      "filename": "Statement_Oct.pdf.exe",
+      "mime_type": "application/pdf",
+      "size_bytes": 204800
+    }
+  ],
+  "images": []
+}

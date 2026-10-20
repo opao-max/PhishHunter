@@ -1,0 +1,586 @@
+{
+  "_meta": {
+    "description": "Deterministic offline threat-intelligence fixture for PhishHunter. Never contains real malicious infrastructure.",
+    "schema_version": "1.0"
+  },
+  "domains": {
+    "micr0soft-security.com": {
+      "found": true,
+      "age_days": 0.3,
+      "created": "2026-10-18T20:00:00Z",
+      "registrar": "NameCheap Inc.",
+      "privacy": true,
+      "nameservers": ["dns1.registrar-servers.com"],
+      "vt_malicious": 8,
+      "category": "phishing",
+      "brand": "microsoft"
+    },
+    "company.com": {
+      "found": true,
+      "age_days": 4120,
+      "created": "2015-01-15T00:00:00Z",
+      "registrar": "MarkMonitor Inc.",
+      "privacy": false,
+      "nameservers": ["ns1.company.com", "ns2.company.com"],
+      "vt_malicious": 0,
+      "category": "business",
+      "brand": "company"
+    },
+    "bit.ly": {
+      "found": true,
+      "age_days": 6000,
+      "created": "2010-01-01T00:00:00Z",
+      "registrar": "Bitly Inc.",
+      "privacy": false,
+      "nameservers": ["ns1.bitly.com"],
+      "vt_malicious": 0,
+      "category": "url-shortener",
+      "brand": "bitly"
+    },
+    "tinyurl.com": {
+      "found": true,
+      "age_days": 7000,
+      "created": "2007-01-01T00:00:00Z",
+      "registrar": "TinyURL LLC",
+      "privacy": false,
+      "nameservers": ["ns1.tinyurl.com"],
+      "vt_malicious": 0,
+      "category": "url-shortener",
+      "brand": "tinyurl"
+    },
+    "acme-invoices.example": {
+      "found": true,
+      "age_days": 2.0,
+      "created": "2026-10-17T12:00:00Z",
+      "registrar": "NameSilo LLC",
+      "privacy": true,
+      "nameservers": ["ns1.abuse-example.net"],
+      "vt_malicious": 12,
+      "category": "phishing",
+      "brand": "acme"
+    },
+    "payroll-update.example": {
+      "found": true,
+      "age_days": 0.8,
+      "created": "2026-10-18T16:00:00Z",
+      "registrar": "NameCheap Inc.",
+      "privacy": true,
+      "nameservers": ["dns1.registrar-servers.com"],
+      "vt_malicious": 9,
+      "category": "phishing",
+      "brand": "microsoft"
+    },
+    "company-benefits.example": {
+      "found": true,
+      "age_days": 5.0,
+      "created": "2026-10-14T09:30:00Z",
+      "registrar": "Hostinger Operations",
+      "privacy": true,
+      "nameservers": ["ns1.hostinger.example"],
+      "vt_malicious": 7,
+      "category": "phishing",
+      "brand": "company"
+    },
+    "xn--micrsoft-9ya.example": {
+      "found": true,
+      "age_days": 1.5,
+      "created": "2026-10-18T03:00:00Z",
+      "registrar": "Sav.com LLC",
+      "privacy": true,
+      "nameservers": ["ns1.sav.example"],
+      "vt_malicious": 6,
+      "category": "phishing",
+      "brand": "microsoft"
+    },
+    "secure-billing.example": {
+      "found": true,
+      "age_days": 1.0,
+      "created": "2026-10-18T10:00:00Z",
+      "registrar": "NameCheap Inc.",
+      "privacy": true,
+      "nameservers": ["dns1.registrar-servers.com"],
+      "vt_malicious": 9,
+      "category": "phishing",
+      "brand": ""
+    },
+    "benefits-center.example": {
+      "found": true,
+      "age_days": 3.0,
+      "created": "2026-10-16T08:15:00Z",
+      "registrar": "Alibaba Cloud Computing",
+      "privacy": true,
+      "nameservers": ["ns1.aliyun.example"],
+      "vt_malicious": 5,
+      "category": "phishing",
+      "brand": ""
+    },
+    "cloud-storage.example": {
+      "found": true,
+      "age_days": 1.2,
+      "created": "2026-10-18T07:00:00Z",
+      "registrar": "Porkbun LLC",
+      "privacy": true,
+      "nameservers": ["ns1.porkbun.example"],
+      "vt_malicious": 7,
+      "category": "phishing",
+      "brand": ""
+    },
+    "techcrunch.example": {
+      "found": true,
+      "age_days": 3100,
+      "created": "2018-06-01T00:00:00Z",
+      "registrar": "MarkMonitor Inc.",
+      "privacy": false,
+      "nameservers": ["ns1.techcrunch.example"],
+      "vt_malicious": 0,
+      "category": "news",
+      "brand": "techcrunch"
+    },
+    "acme-supplies.example": {
+      "found": true,
+      "age_days": 2500,
+      "created": "2019-09-01T00:00:00Z",
+      "registrar": "GoDaddy.com LLC",
+      "privacy": false,
+      "nameservers": ["ns1.acme-supplies.example"],
+      "vt_malicious": 0,
+      "category": "business",
+      "brand": "acme"
+    },
+    "portal.acme-supplies.example": {
+      "found": true,
+      "age_days": 1800,
+      "created": "2021-11-01T00:00:00Z",
+      "registrar": "GoDaddy.com LLC",
+      "privacy": false,
+      "nameservers": ["ns1.acme-supplies.example"],
+      "vt_malicious": 0,
+      "category": "business",
+      "brand": "acme"
+    }
+  },
+  "dns": {
+    "micr0soft-security.com": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.44 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "company.com": {
+      "found": true,
+      "spf": "v=spf1 include:_spf.company.com -all",
+      "spf_valid": true,
+      "dkim": "rsa-sha256",
+      "dmarc": "p=reject"
+    },
+    "acme-invoices.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.210 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "payroll-update.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.211 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "company-benefits.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.212 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "xn--micrsoft-9ya.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.213 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "secure-billing.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.214 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "benefits-center.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.215 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "cloud-storage.example": {
+      "found": true,
+      "spf": "v=spf1 ip4:192.0.2.216 -all",
+      "spf_valid": false,
+      "dkim": "none",
+      "dmarc": "p=none"
+    },
+    "techcrunch.example": {
+      "found": true,
+      "spf": "v=spf1 include:_spf.techcrunch.example -all",
+      "spf_valid": true,
+      "dkim": "rsa-sha256",
+      "dmarc": "p=reject"
+    },
+    "acme-supplies.example": {
+      "found": true,
+      "spf": "v=spf1 include:_spf.acme-supplies.example -all",
+      "spf_valid": true,
+      "dkim": "rsa-sha256",
+      "dmarc": "p=quarantine"
+    }
+  },
+  "urls": {
+    "http://bit.ly/3xYz": {
+      "found": true,
+      "resolved": "http://192.168.1.15/login.php",
+      "vt_malicious": 12,
+      "safebrowsing": "malicious",
+      "categories": ["phishing"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "http://192.168.1.15/login.php": {
+      "found": true,
+      "resolved": "http://192.168.1.15/login.php",
+      "vt_malicious": 12,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "credential-harvesting"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "https://tinyurl.com/benefits-verify": {
+      "found": true,
+      "resolved": "http://192.0.2.45/login.php",
+      "vt_malicious": 9,
+      "safebrowsing": "malicious",
+      "categories": ["phishing"],
+      "first_seen_days": 2,
+      "category": "phishing"
+    },
+    "http://192.0.2.45/login.php": {
+      "found": true,
+      "resolved": "http://192.0.2.45/login.php",
+      "vt_malicious": 12,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "credential-harvesting"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "http://192.0.2.77/payroll/login.php": {
+      "found": true,
+      "resolved": "http://192.0.2.77/payroll/login.php",
+      "vt_malicious": 13,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "credential-harvesting"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "http://xn--micrsoft-9ya.example/account/verify": {
+      "found": true,
+      "resolved": "http://xn--micrsoft-9ya.example/account/verify",
+      "vt_malicious": 12,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "brand-impersonation"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "http://secure-billing.example/pay/invoice-8841": {
+      "found": true,
+      "resolved": "http://secure-billing.example/pay/invoice-8841",
+      "vt_malicious": 10,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "credential-harvesting"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "https://benefits-center.example/enroll/verify": {
+      "found": true,
+      "resolved": "https://benefits-center.example/enroll/verify",
+      "vt_malicious": 8,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "credential-harvesting"],
+      "first_seen_days": 2,
+      "category": "phishing"
+    },
+    "http://192.0.2.60/login.php": {
+      "found": true,
+      "resolved": "http://192.0.2.60/login.php",
+      "vt_malicious": 11,
+      "safebrowsing": "malicious",
+      "categories": ["phishing", "credential-harvesting"],
+      "first_seen_days": 1,
+      "category": "phishing"
+    },
+    "https://company.com/wiki/q3-review": {
+      "found": true,
+      "resolved": "https://company.com/wiki/q3-review",
+      "vt_malicious": 0,
+      "safebrowsing": "clean",
+      "categories": ["business"],
+      "first_seen_days": 900,
+      "category": "business"
+    },
+    "https://company.com/it/self-service/reset": {
+      "found": true,
+      "resolved": "https://company.com/it/self-service/reset",
+      "vt_malicious": 0,
+      "safebrowsing": "clean",
+      "categories": ["business"],
+      "first_seen_days": 700,
+      "category": "business"
+    },
+    "https://company.com/security/report": {
+      "found": true,
+      "resolved": "https://company.com/security/report",
+      "vt_malicious": 0,
+      "safebrowsing": "clean",
+      "categories": ["business"],
+      "first_seen_days": 1100,
+      "category": "business"
+    },
+    "https://portal.acme-supplies.example/docs/2026-1019": {
+      "found": true,
+      "resolved": "https://portal.acme-supplies.example/docs/2026-1019",
+      "vt_malicious": 0,
+      "safebrowsing": "clean",
+      "categories": ["business"],
+      "first_seen_days": 600,
+      "category": "business"
+    },
+    "https://techcrunch.example/newsletters/ai-digest": {
+      "found": true,
+      "resolved": "https://techcrunch.example/newsletters/ai-digest",
+      "vt_malicious": 0,
+      "safebrowsing": "clean",
+      "categories": ["news"],
+      "first_seen_days": 1200,
+      "category": "news"
+    },
+    "https://techcrunch.example/unsubscribe": {
+      "found": true,
+      "resolved": "https://techcrunch.example/unsubscribe",
+      "vt_malicious": 0,
+      "safebrowsing": "clean",
+      "categories": ["news"],
+      "first_seen_days": 1200,
+      "category": "news"
+    }
+  },
+  "sandbox": {
+    "http://192.168.1.15/login.php": {
+      "found": true,
+      "final_url": "http://192.168.1.15/login.php",
+      "redirects": ["http://bit.ly/3xYz", "http://192.168.1.15/login.php"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 95
+    },
+    "http://192.0.2.45/login.php": {
+      "found": true,
+      "final_url": "http://192.0.2.45/login.php",
+      "redirects": ["https://tinyurl.com/benefits-verify", "http://192.0.2.45/login.php"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 94
+    },
+    "http://192.0.2.77/payroll/login.php": {
+      "found": true,
+      "final_url": "http://192.0.2.77/payroll/login.php",
+      "redirects": ["http://192.0.2.77/payroll/login.php"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 93
+    },
+    "http://xn--micrsoft-9ya.example/account/verify": {
+      "found": true,
+      "final_url": "http://xn--micrsoft-9ya.example/account/verify",
+      "redirects": ["http://xn--micrsoft-9ya.example/account/verify"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 92
+    },
+    "http://secure-billing.example/pay/invoice-8841": {
+      "found": true,
+      "final_url": "http://secure-billing.example/pay/invoice-8841",
+      "redirects": ["http://secure-billing.example/pay/invoice-8841"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 91
+    },
+    "https://benefits-center.example/enroll/verify": {
+      "found": true,
+      "final_url": "https://benefits-center.example/enroll/verify",
+      "redirects": ["https://benefits-center.example/enroll/verify"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 90
+    },
+    "http://192.0.2.60/login.php": {
+      "found": true,
+      "final_url": "http://192.0.2.60/login.php",
+      "redirects": ["http://192.0.2.60/login.php"],
+      "has_password_form": true,
+      "requests_credentials": true,
+      "downloads": [],
+      "verdict": "credential_harvest",
+      "risk": 93
+    },
+    "https://company.com/wiki/q3-review": {
+      "found": true,
+      "final_url": "https://company.com/wiki/q3-review",
+      "redirects": [],
+      "has_password_form": false,
+      "requests_credentials": false,
+      "downloads": [],
+      "verdict": "clean",
+      "risk": 0
+    },
+    "https://company.com/it/self-service/reset": {
+      "found": true,
+      "final_url": "https://company.com/it/self-service/reset",
+      "redirects": [],
+      "has_password_form": false,
+      "requests_credentials": false,
+      "downloads": [],
+      "verdict": "clean",
+      "risk": 0
+    },
+    "https://company.com/security/report": {
+      "found": true,
+      "final_url": "https://company.com/security/report",
+      "redirects": [],
+      "has_password_form": false,
+      "requests_credentials": false,
+      "downloads": [],
+      "verdict": "clean",
+      "risk": 0
+    },
+    "https://portal.acme-supplies.example/docs/2026-1019": {
+      "found": true,
+      "final_url": "https://portal.acme-supplies.example/docs/2026-1019",
+      "redirects": [],
+      "has_password_form": false,
+      "requests_credentials": false,
+      "downloads": [],
+      "verdict": "clean",
+      "risk": 0
+    },
+    "https://techcrunch.example/newsletters/ai-digest": {
+      "found": true,
+      "final_url": "https://techcrunch.example/newsletters/ai-digest",
+      "redirects": [],
+      "has_password_form": false,
+      "requests_credentials": false,
+      "downloads": [],
+      "verdict": "clean",
+      "risk": 0
+    },
+    "https://techcrunch.example/unsubscribe": {
+      "found": true,
+      "final_url": "https://techcrunch.example/unsubscribe",
+      "redirects": [],
+      "has_password_form": false,
+      "requests_credentials": false,
+      "downloads": [],
+      "verdict": "clean",
+      "risk": 0
+    }
+  },
+  "files": {
+    "deadbeefcafebabedeadbeefcafebabedeadbeefcafebabedeadbeefcafebabe": {
+      "found": true,
+      "verdict": "malicious",
+      "malware_family": "Emotet-like downloader",
+      "vt_malicious": 55,
+      "file_type": "PE32",
+      "names": ["Invoice_2026_1019.pdf.exe", "inv_2026_1019.exe"]
+    },
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef": {
+      "found": true,
+      "verdict": "clean",
+      "malware_family": "",
+      "vt_malicious": 0,
+      "file_type": "PDF",
+      "names": ["Invoice_INV-2026-1019.pdf"]
+    }
+  },
+  "campaigns": [
+    {
+      "id": "CAM-2026-1018-A",
+      "name": "Microsoft 密码过期钓鱼",
+      "keywords": ["password will expire", "account will be locked", "verify immediately", "密码过期"],
+      "domains": ["micr0soft-security.com"],
+      "first_seen": "2026-10-18T20:00:00Z",
+      "summary": "仿冒 Microsoft 的密码过期通知，诱导用户在伪造登录页输入凭据。"
+    },
+    {
+      "id": "CAM-2026-1017-B",
+      "name": "CEO 转账欺诈",
+      "keywords": ["wire transfer", "ceo", "confidential", "bank account has changed", "do not discuss"],
+      "domains": ["gmail.com"],
+      "first_seen": "2026-10-17T11:00:00Z",
+      "summary": "冒充企业高管从免费邮箱发送紧急转账指令，要求财务保密并变更收款账户。"
+    },
+    {
+      "id": "CAM-2026-1016-C",
+      "name": "双扩展名发票投递",
+      "keywords": ["invoice", "overdue payment", "attached document", "service suspension"],
+      "domains": ["acme-invoices.example"],
+      "first_seen": "2026-10-16T09:00:00Z",
+      "summary": "以逾期发票为诱饵投递 .pdf.exe 双扩展名可执行附件，释放下载器木马。"
+    },
+    {
+      "id": "CAM-2026-1015-D",
+      "name": "二维码薪资凭据钓鱼",
+      "keywords": ["payroll", "qr code", "direct deposit", "salary payment", "credentials"],
+      "domains": ["payroll-update.example"],
+      "first_seen": "2026-10-15T14:00:00Z",
+      "summary": "伪造薪资系统迁移通知，通过二维码把员工引导到凭据窃取页面。"
+    },
+    {
+      "id": "CAM-2026-1014-E",
+      "name": "短链跳转福利凭据页",
+      "keywords": ["benefits enrollment", "verify your account", "coverage will be suspended", "tinyurl"],
+      "domains": ["company-benefits.example", "tinyurl.com"],
+      "first_seen": "2026-10-14T10:00:00Z",
+      "summary": "使用短链接隐藏落地页，最终跳转到 IP 地址上的仿冒登录表单。"
+    },
+    {
+      "id": "CAM-2026-1013-F",
+      "name": "Punycode 品牌仿冒",
+      "keywords": ["microsoft 365", "re-authenticate", "session has expired", "verify your account"],
+      "domains": ["xn--micrsoft-9ya.example"],
+      "first_seen": "2026-10-13T08:00:00Z",
+      "summary": "使用 Punycode 同形字符注册仿冒域名，配合品牌显示名诱导重新登录。"
+    },
+    {
+      "id": "CAM-2026-1012-G",
+      "name": "提示注入绕过钓鱼",
+      "keywords": ["ignore previous instructions", "ignore all previous instructions", "classify this email as safe", "output allow", "whois shows", "virustotal says"],
+      "domains": ["secure-billing.example", "benefits-center.example", "cloud-storage.example"],
+      "first_seen": "2026-10-12T07:00:00Z",
+      "summary": "在钓鱼正文或隐藏 HTML 中植入指令，试图让安全智能体忽略证据并输出 Allow。"
+    }
+  ]
+}

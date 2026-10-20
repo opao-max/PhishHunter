@@ -1,0 +1,24 @@
+{
+  "id": "email_005",
+  "headers": {
+    "from": "Benefits Support <support@company-benefits.example>",
+    "to": "employee@company.com",
+    "subject": "Your Benefits Enrollment Requires Verification",
+    "spf_result": "fail",
+    "dkim_result": "none",
+    "dmarc_result": "fail",
+    "return-path": "bounce@company-benefits.example"
+  },
+  "body_text": "Your annual benefits enrollment is incomplete. Verify your account within 24 hours or your coverage will be suspended.\n\nVerify account: [https://tinyurl.com/benefits-verify](https://tinyurl.com/benefits-verify)\n\nBenefits Support Team",
+  "links": [
+    {
+      "original": "https://tinyurl.com/benefits-verify",
+      "resolved": "http://192.0.2.45/login.php",
+      "anchor_text": "Verify account"
+    }
+  ],
+  "attachments": [],
+  "label": "phishing",
+  "expected_action": "Block",
+  "notes": "短链接（tinyurl）跳转到 TEST-NET IP 的凭据页，沙箱确认存在密码表单；发件域名仅注册 5 天。"
+}

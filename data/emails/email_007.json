@@ -1,0 +1,24 @@
+{
+  "id": "email_007",
+  "headers": {
+    "from": "Li Na <li.na@company.com>",
+    "to": "Engineering Team <eng@company.com>",
+    "subject": "周三产品评审会：时间与议程确认",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass",
+    "return-path": "li.na@company.com"
+  },
+  "body_text": "各位同事：\n\n本周三下午 3 点的产品评审会照常进行，会议地点为 5 楼 A 会议室，线上会议链接如下：https://company.com/wiki/q3-review 。请提前准备本周进展，无需回复确认。\n\n李娜",
+  "links": [
+    {
+      "original": "https://company.com/wiki/q3-review",
+      "resolved": "",
+      "anchor_text": "会议链接"
+    }
+  ],
+  "attachments": [],
+  "label": "legit",
+  "expected_action": "Allow",
+  "notes": "正常内部会议通知：公司域名、SPF/DKIM/DMARC 全部通过，链接为内部 wiki，无敏感凭据请求。"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "rt06_punycode_clean_auth_unknown",
+  "label": "phishing",
+  "expected_action": "Block",
+  "redteam_focus": "punycode brand spoof with clean SPF/DKIM and unknown domain",
+  "notes": "xn--mcrsoft-cjg7s decodes to a Cyrillic homoglyph of 'microsoft' (Levenshtein 2), so the fuzzy brand logic should not fire. Punycode evidence/floor must carry the case.",
+  "headers": {
+    "from": "Account Security <security@xn--mcrsoft-cjg7s.example>",
+    "to": "employee@company.com",
+    "subject": "Session expired: re-authenticate",
+    "spf_result": "pass",
+    "dkim_result": "pass",
+    "dmarc_result": "pass"
+  },
+  "body_text": "Your session has expired. Verify your account and password within 24 hours at https://xn--mcrsoft-cjg7s.example/account/verify\n",
+  "body_html": null,
+  "links": [
+    {
+      "original": "https://xn--mcrsoft-cjg7s.example/account/verify",
+      "resolved": "",
+      "anchor_text": "re-authenticate"
+    }
+  ],
+  "attachments": [],
+  "images": []
+}

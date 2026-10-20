@@ -1,0 +1,31 @@
+{
+  "id": "email_004",
+  "headers": {
+    "from": "Microsoft Payroll Center <hr@payroll-update.example>",
+    "to": "employee@company.com",
+    "subject": "Action Required: Update Your Payroll Direct Deposit",
+    "spf_result": "fail",
+    "dkim_result": "none",
+    "dmarc_result": "fail",
+    "return-path": "bounce@payroll-update.example"
+  },
+  "body_text": "Dear employee,\n\nOur payroll system has migrated. Scan the QR code below to log in and verify your payroll password within 24 hours, or your salary payment will be suspended.\n\nMicrosoft Payroll Center",
+  "links": [],
+  "attachments": [],
+  "images": [
+    {
+      "filename": "payroll_qr.png",
+      "hash": "0011223344556677001122334455667700112233445566770011223344556677",
+      "mime_type": "image/png",
+      "ocr_text": "Scan to verify your payroll credentials within 24 hours",
+      "detected_brands": [
+        "Microsoft"
+      ],
+      "alt_text": "Payroll QR code",
+      "content_b64": "iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAAAAAByj52zAAABBElEQVQ4EYXBwW3YABAEMW7/RU9OMgL7J3L5sHxY5pXlzKN5ZVnOmiYsLGdZ1mgZWcuyRsuyRmtazrLWaFnWaLGGhtZoWZaz1jLCWs6yzKu11lprzSvLX9Oy/FrmNKc1NFprsbAslse8WiwLyzRNFtZaHsta1hqZLNOyWKYhazmTtSYsC2tZozmttZbFZAijxcLCYrTWNC1nxGJ5rGlaQyYsLMuEyZlXo2VZmNNkYS0TljWttZa15rQslmnIWs6aRyPLf6ORaTEny7waGa1pjbAsZ1kmi8ViWdZoLdayzI9Y1mgtrzW0mCxrtNbIaFnTYlnOGjIxmSyWebUsZ2GZsHxYPvwDmNv+AarH8pgAAAAASUVORK5CYII="
+    }
+  ],
+  "label": "phishing",
+  "expected_action": "Block",
+  "notes": "薪资凭据二维码钓鱼：二维码指向 TEST-NET IP 上的 /payroll/login.php，发件域名新注册且显示名冒用 Microsoft。 图片以真实 PNG 字节（content_b64）提供，演示本地 QR 解码（OpenCV 可选）而非仅依赖上游元数据。"
+}

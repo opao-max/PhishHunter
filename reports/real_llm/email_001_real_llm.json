@@ -1,0 +1,812 @@
+{
+  "email_id": "email_001",
+  "subject": "Urgent: Password Expiry Notification",
+  "sender": "Microsoft Support <support@micr0soft-security.com>",
+  "risk_score": 95.0,
+  "risk_level": "Critical",
+  "action": "Block",
+  "confidence": 0.97,
+  "summary": "该邮件是一封高度可信的钓鱼邮件：发件域 micr0soft-security.com 仅注册 0.3 天且被 8 个引擎判定为恶意，并以同形字仿冒 Microsoft 品牌 [E006][E007][E002]；邮件身份认证全面失败（SPF=fail、DKIM=none、DMARC=fail，且域名缺少有效 SPF 记录）[E001][E009]。正文使用“密码 2 小时后过期、账户将被锁定”等紧迫性话术 [E003]，链接 http://bit.ly/3xYz 经短链跳转至裸 IP http://192.168.1.15/login.php，采用明文 HTTP、路径含 login 关键词，被 12 个引擎判定为恶意 [E011][E005][E010]，沙箱进一步确认该页面存在密码输入表单并提交凭据，属凭据窃取 [E012][E013]。该邮件与历史“Microsoft 密码过期钓鱼”活动相似度 72% [E015]。bit.ly 域名注册时间长仅说明短链服务本身未被标记，不能为落地页开脱 [E014]。综合判定为凭据钓鱼，建议分数与确定性分数保持一致（95）。",
+  "evidence_chain": [
+    {
+      "id": "E006",
+      "category": "threat_intel",
+      "title": "新注册域名",
+      "detail": "域名 micr0soft-security.com 注册仅 0.3 天，属于典型的钓鱼基础设施特征。",
+      "severity": 0.95,
+      "confidence": 0.95,
+      "source": "tool:whois_lookup",
+      "tags": [
+        "domain_new"
+      ],
+      "raw": {
+        "domain": "micr0soft-security.com",
+        "age_days": 0.3
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E010",
+      "category": "url",
+      "title": "已知恶意 URL",
+      "detail": "URL http://192.168.1.15/login.php 威胁情报：12 个引擎判定恶意，Safe Browsing=malicious，分类：phishing、credential-harvesting。",
+      "severity": 0.95,
+      "confidence": 0.95,
+      "source": "tool:url_reputation",
+      "tags": [
+        "known_malicious_url"
+      ],
+      "raw": {
+        "url": "http://192.168.1.15/login.php",
+        "vt_malicious": 12,
+        "safebrowsing": "malicious",
+        "categories": [
+          "phishing",
+          "credential-harvesting"
+        ]
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E011",
+      "category": "url",
+      "title": "已知恶意 URL",
+      "detail": "URL http://bit.ly/3xYz 威胁情报：12 个引擎判定恶意，Safe Browsing=malicious，分类：phishing。",
+      "severity": 0.95,
+      "confidence": 0.95,
+      "source": "tool:url_reputation",
+      "tags": [
+        "known_malicious_url"
+      ],
+      "raw": {
+        "url": "http://bit.ly/3xYz",
+        "vt_malicious": 12,
+        "safebrowsing": "malicious",
+        "categories": [
+          "phishing"
+        ]
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E012",
+      "category": "url",
+      "title": "沙箱发现凭据窃取页面",
+      "detail": "沙箱访问 http://192.168.1.15/login.php 后发现：存在密码输入表单；页面请求提交凭据；沙箱判定为凭据窃取。",
+      "severity": 0.95,
+      "confidence": 0.95,
+      "source": "tool:url_sandbox",
+      "tags": [
+        "credential_harvest"
+      ],
+      "raw": {
+        "url": "http://192.168.1.15/login.php",
+        "verdict": "credential_harvest",
+        "final_url": "http://192.168.1.15/login.php"
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E005",
+      "category": "url",
+      "title": "链接跳转至 IP 地址",
+      "detail": "原始链接：http://bit.ly/3xYz；实际目标：http://192.168.1.15/login.php；目标主机：192.168.1.15。发现：1) 实际目标为 IP 地址 192.168.1.15（短链接/原始域名 bit.ly 指向裸 IP；该 IP 属于私有/保留地址段；URL 路径包含凭据采集关键词），无法通过域名归属核验。；2) 声明的原始域名 bit.ly 实际跳转到 192.168.1.15，二者不属于同一站点。；3) 链接使用短链接服务 bit.ly，真实落地页被隐藏。；4) 路径/参数包含「login」，且目标域名 192.168.1.15 不属于该品牌自有域名。 同时使用明文 HTTP 传输，凭据可能被窃听。",
+      "severity": 0.8999999999999999,
+      "confidence": 0.9,
+      "source": "detector:link_analysis",
+      "tags": [
+        "ip_literal",
+        "redirect_ip",
+        "redirect",
+        "shortener",
+        "credential_path",
+        "plaintext_http"
+      ],
+      "raw": {
+        "url": "http://192.168.1.15/login.php",
+        "original": "http://bit.ly/3xYz",
+        "host": "192.168.1.15",
+        "original_host": "bit.ly",
+        "signals": [
+          "redirect_ip",
+          "redirect",
+          "shortener",
+          "credential_path"
+        ]
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E001",
+      "category": "header_auth",
+      "title": "邮件身份认证失败",
+      "detail": "SPF=fail、DKIM=none、DMARC=fail。发件域未能提供完整可信的邮件身份认证链，存在伪造发件人的可能。",
+      "severity": 0.85,
+      "confidence": 0.9,
+      "source": "detector:header_analysis",
+      "tags": [
+        "auth_fail",
+        "spf_fail",
+        "dmarc_fail"
+      ],
+      "raw": {
+        "spf": "fail",
+        "dkim": "none",
+        "dmarc": "fail",
+        "spf_raw": "fail",
+        "dkim_raw": "none",
+        "dmarc_raw": "fail",
+        "spf_origin": "header",
+        "dkim_origin": "header",
+        "dmarc_origin": "header",
+        "from_domain": "micr0soft-security.com"
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E007",
+      "category": "threat_intel",
+      "title": "域名被威胁情报标记为恶意",
+      "detail": "域名 micr0soft-security.com 被 8 个引擎判定为恶意，分类为 phishing。",
+      "severity": 0.85,
+      "confidence": 0.9,
+      "source": "tool:whois_lookup",
+      "tags": [
+        "malicious_domain"
+      ],
+      "raw": {
+        "domain": "micr0soft-security.com",
+        "vt_malicious": 8
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E013",
+      "category": "url",
+      "title": "链接跳转至 IP 地址",
+      "detail": "沙箱观察到跳转链 http://bit.ly/3xYz -> http://192.168.1.15/login.php，最终落地到 IP 主机 192.168.1.15，绕过域名信誉检查。",
+      "severity": 0.8,
+      "confidence": 0.9,
+      "source": "tool:url_sandbox",
+      "tags": [
+        "redirect_ip"
+      ],
+      "raw": {
+        "url": "http://192.168.1.15/login.php",
+        "final_url": "http://192.168.1.15/login.php",
+        "redirects": [
+          "http://bit.ly/3xYz",
+          "http://192.168.1.15/login.php"
+        ]
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E015",
+      "category": "threat_intel",
+      "title": "命中相似历史钓鱼活动",
+      "detail": "与历史活动「Microsoft 密码过期钓鱼」（CAM-2026-1018-A） 的相似度为 72%，命中关键词：password will expire、account will be locked。活动摘要：仿冒 Microsoft 的密码过期通知，诱导用户在伪造登录页输入凭据。",
+      "severity": 0.8,
+      "confidence": 0.85,
+      "source": "tool:retrieve_similar_campaigns",
+      "tags": [
+        "campaign_match"
+      ],
+      "raw": {
+        "campaign_id": "CAM-2026-1018-A",
+        "name": "Microsoft 密码过期钓鱼",
+        "similarity": 0.725
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E002",
+      "category": "sender_identity",
+      "title": "发件人身份疑似品牌仿冒",
+      "detail": "发件域 micr0soft-security.com 疑似仿冒品牌：microsoft（品牌名同形，令牌“micr0soft”→“microsoft”）。显示名声称属于品牌 microsoft，但发件域 micr0soft-security.com 并非其官方域名。",
+      "severity": 0.75,
+      "confidence": 0.86,
+      "source": "detector:sender_identity",
+      "tags": [
+        "brand_spoof"
+      ],
+      "raw": {
+        "from_domain": "micr0soft-security.com",
+        "from_display": "Microsoft Support",
+        "tokens": [
+          "micr0soft",
+          "security",
+          "com"
+        ],
+        "signals": [
+          {
+            "brand": "microsoft",
+            "kind": "exact",
+            "token": "micr0soft",
+            "normalized": "microsoft"
+          }
+        ],
+        "display_brands": [
+          "microsoft"
+        ],
+        "display_mismatch": [
+          "microsoft"
+        ],
+        "decoded_domain": ""
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E003",
+      "category": "content",
+      "title": "紧迫感与威胁性话术",
+      "detail": "命中 4 个特征短语（强特征 2 个）：“account will be locked”、“will expire”、“immediately”、“urgent”。",
+      "severity": 0.68,
+      "confidence": 0.8999999999999999,
+      "source": "detector:text_analysis",
+      "tags": [
+        "urgency"
+      ],
+      "raw": {
+        "group": "urgency",
+        "matched_phrases": [
+          "account will be locked",
+          "will expire",
+          "immediately",
+          "urgent"
+        ],
+        "match_count": 4,
+        "strong_count": 2
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E008",
+      "category": "sender_identity",
+      "title": "域名与声称的品牌归属不一致",
+      "detail": "情报显示该域名声称归属「microsoft」，但域名 micr0soft-security.com 并非该品牌的官方域名，存在品牌仿冒风险。",
+      "severity": 0.7,
+      "confidence": 0.8,
+      "source": "tool:whois_lookup",
+      "tags": [
+        "brand_spoof"
+      ],
+      "raw": {
+        "domain": "micr0soft-security.com",
+        "brand": "microsoft"
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E009",
+      "category": "header_auth",
+      "title": "域名认证策略缺失或过弱",
+      "detail": "域名 micr0soft-security.com：SPF 记录缺失或无效，无法约束发件服务器。",
+      "severity": 0.55,
+      "confidence": 0.85,
+      "source": "tool:dns_auth_check",
+      "tags": [
+        "missing_spf"
+      ],
+      "raw": {
+        "domain": "micr0soft-security.com",
+        "spf": "v=spf1 ip4:192.0.2.44 -all",
+        "dmarc": "p=none",
+        "dmarc_policy": "none"
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E004",
+      "category": "content",
+      "title": "索取凭据/诱导登录",
+      "detail": "命中 1 个特征短语（强特征 0 个）：“password”。",
+      "severity": 0.2,
+      "confidence": 0.86,
+      "source": "detector:text_analysis",
+      "tags": [
+        "credential_language"
+      ],
+      "raw": {
+        "group": "credential",
+        "matched_phrases": [
+          "password"
+        ],
+        "match_count": 1,
+        "strong_count": 0
+      },
+      "polarity": "risk",
+      "verifiable": true
+    },
+    {
+      "id": "E014",
+      "category": "threat_intel",
+      "title": "域名注册时间较长",
+      "detail": "域名 bit.ly 已注册约 16.4 年，未见恶意情报记录，可作为降低风险的佐证。",
+      "severity": 0.45,
+      "confidence": 0.8,
+      "source": "tool:whois_lookup",
+      "tags": [
+        "established_domain"
+      ],
+      "raw": {
+        "domain": "bit.ly",
+        "age_days": 6000.0
+      },
+      "polarity": "mitigating",
+      "verifiable": true
+    }
+  ],
+  "reasoning_steps": [
+    "发件人 support@micr0soft-security.com，显示名「Microsoft Support」；SPF=fail，DKIM=none，DMARC=fail。",
+    "[E006] 新注册域名：域名 micr0soft-security.com 注册仅 0.3 天，属于典型的钓鱼基础设施特征。",
+    "[E010] 已知恶意 URL：URL http://192.168.1.15/login.php 威胁情报：12 个引擎判定恶意，Safe Browsing=malicious，分类：phishing、credential-harvesting。",
+    "[E011] 已知恶意 URL：URL http://bit.ly/3xYz 威胁情报：12 个引擎判定恶意，Safe Browsing=malicious，分类：phishing。",
+    "[E012] 沙箱发现凭据窃取页面：沙箱访问 http://192.168.1.15/login.php 后发现：存在密码输入表单；页面请求提交凭据；沙箱判定为凭据窃取。",
+    "[E005] 链接跳转至 IP 地址：原始链接：http://bit.ly/3xYz；实际目标：http://192.168.1.15/login.php；目标主机：192.168.1.15。发现：1) 实际目标为 IP 地址 192.168.1.15（短链接/原始域名 bit.ly 指向裸 IP；该 IP 属于私有/保留地址段；URL 路径包含凭据采集关键词），无法通过域名归属核验。；2) 声明的原始域名 bit.ly 实际跳转到 192.168.1.15，二者不属于同一站点。；3) 链接使用短链接服务 bit.ly，真实落地页被隐藏。；4) 路径/参数包含「login」，且目标域名 192.168.1.15 不属于该品牌自有域名。 同时使用明文 HTTP 传输，凭据可能被窃听。",
+    "[E001] 邮件身份认证失败：SPF=fail、DKIM=none、DMARC=fail。发件域未能提供完整可信的邮件身份认证链，存在伪造发件人的可能。",
+    "关键证据触发策略下限 95 分：威胁情报确认该 URL 为恶意；沙箱发现凭据窃取页面；新注册域名叠加身份或认证异常；品牌仿冒叠加邮件认证失败；短链接跳转到 IP 地址或凭据页；短链接跳转到凭据页面；品牌仿冒叠加凭据索取话术；跳转链接指向凭据页面；认证失败叠加凭据窃取话术；发件域疑似品牌仿冒。该下限不可被模型下调。",
+    "计入 3.6 分缓解信号（[E014] 域名注册时间较长）。",
+    "模型综合：发件域 micr0soft-security.com 注册仅 0.3 天并被 8 个引擎标记为 phishing，属典型新注册钓鱼基础设施 [E006][E007]，且用同形字“micr0soft”仿冒 Microsoft，显示名与真实归属不符 [E002][E008]。",
+    "模型综合：邮件身份认证链完全失败：SPF=fail、DKIM=none、DMARC=fail，且该域 SPF 记录缺失或无效，无法约束发件服务器 [E001][E009]，与品牌仿冒结论相互印证。",
+    "模型综合：正文命中“account will be locked”“will expire”“immediately”“urgent”等紧迫威胁话术，并出现“password”等凭据诱导语言 [E003][E004]。",
+    "模型综合：链接 http://bit.ly/3xYz 使用短链隐藏真实落地页，实际跳转至裸 IP http://192.168.1.15/login.php，路径含 login 且走明文 HTTP，无法通过域名归属核验 [E005][E013]。",
+    "模型综合：该落地 URL 被 12 个引擎判定为恶意（Safe Browsing=malicious，分类 phishing、credential-harvesting）[E010]，短链亦被判定为恶意 [E011]。",
+    "模型综合：沙箱访问确认目标页面存在密码输入表单并请求提交凭据，判定为凭据窃取页面 [E012]，完成“诱导—跳转—窃取”的完整攻击链。",
+    "模型综合：行为与历史活动「Microsoft 密码过期钓鱼」（CAM-2026-1018-A）相似度 72%，命中同类关键词，符合已知钓鱼活动模式 [E015]。",
+    "综合评分 95.0/100（Critical），置信度 0.97，处置建议：Block。"
+  ],
+  "score_breakdown": {
+    "raw_score": 61.9,
+    "pre_llm_score": 95.0,
+    "final_score": 95.0,
+    "category_scores": {
+      "header_auth": 0.8749,
+      "sender_identity": 0.8438,
+      "url": 1.0,
+      "attachment": 0.0,
+      "content": 0.6787,
+      "image": 0.0,
+      "prompt_injection": 0.0,
+      "threat_intel": 0.9927
+    },
+    "category_contributions": {
+      "header_auth": 12.25,
+      "sender_identity": 15.19,
+      "url": 22.0,
+      "attachment": 0.0,
+      "content": 8.14,
+      "image": 0.0,
+      "prompt_injection": 0.0,
+      "threat_intel": 7.94
+    },
+    "mitigation_points": 3.6,
+    "floor": 95.0,
+    "floor_reasons": [
+      "威胁情报确认该 URL 为恶意",
+      "沙箱发现凭据窃取页面",
+      "新注册域名叠加身份或认证异常",
+      "品牌仿冒叠加邮件认证失败",
+      "短链接跳转到 IP 地址或凭据页",
+      "短链接跳转到凭据页面",
+      "品牌仿冒叠加凭据索取话术",
+      "跳转链接指向凭据页面",
+      "认证失败叠加凭据窃取话术",
+      "发件域疑似品牌仿冒"
+    ],
+    "llm_adjustment": 0.0,
+    "confidence": 0.97,
+    "risk_level": "Critical"
+  },
+  "tool_calls": [
+    {
+      "id": "C01",
+      "tool": "whois_lookup",
+      "params": {
+        "domain": "micr0soft-security.com"
+      },
+      "reason": "核实发件域名的注册时间与注册信息（新域名是强钓鱼信号）",
+      "ok": true,
+      "latency_ms": 0.13,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "vt_malicious": 8,
+        "age_days": 0.3,
+        "created": "2026-10-18T20:00:00Z",
+        "registrar": "NameCheap Inc.",
+        "category": "phishing",
+        "brand": "microsoft"
+      },
+      "data": {
+        "found": true,
+        "age_days": 0.3,
+        "created": "2026-10-18T20:00:00Z",
+        "registrar": "NameCheap Inc.",
+        "privacy": true,
+        "nameservers": [
+          "dns1.registrar-servers.com"
+        ],
+        "vt_malicious": 8,
+        "category": "phishing",
+        "brand": "microsoft"
+      },
+      "evidence_ids": [
+        "E006",
+        "E007",
+        "E008"
+      ]
+    },
+    {
+      "id": "C02",
+      "tool": "dns_auth_check",
+      "params": {
+        "domain": "micr0soft-security.com"
+      },
+      "reason": "检查发件域发布的 SPF/DKIM/DMARC 策略与邮件头声明是否一致",
+      "ok": true,
+      "latency_ms": 0.06,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "spf": "v=spf1 ip4:192.0.2.44 -all",
+        "dkim": "none",
+        "dmarc": "p=none"
+      },
+      "data": {
+        "found": true,
+        "spf": "v=spf1 ip4:192.0.2.44 -all",
+        "dkim": "none",
+        "dmarc": "p=none",
+        "spf_valid": false,
+        "dmarc_policy": "none"
+      },
+      "evidence_ids": [
+        "E009"
+      ]
+    },
+    {
+      "id": "C03",
+      "tool": "url_reputation",
+      "params": {
+        "url": "http://192.168.1.15/login.php"
+      },
+      "reason": "查询目标 URL 的多引擎信誉、分类与首次发现时间",
+      "ok": true,
+      "latency_ms": 0.02,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "vt_malicious": 12,
+        "resolved": "http://192.168.1.15/login.php",
+        "category": "phishing",
+        "categories": [
+          "phishing",
+          "credential-harvesting"
+        ]
+      },
+      "data": {
+        "found": true,
+        "resolved": "http://192.168.1.15/login.php",
+        "vt_malicious": 12,
+        "safebrowsing": "malicious",
+        "categories": [
+          "phishing",
+          "credential-harvesting"
+        ],
+        "first_seen_days": 1,
+        "category": "phishing"
+      },
+      "evidence_ids": [
+        "E010"
+      ]
+    },
+    {
+      "id": "C04",
+      "tool": "url_reputation",
+      "params": {
+        "url": "http://bit.ly/3xYz"
+      },
+      "reason": "查询短链接/原始链接本身的信誉（可能存在跳转包装）",
+      "ok": true,
+      "latency_ms": 0.03,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "vt_malicious": 12,
+        "resolved": "http://192.168.1.15/login.php",
+        "category": "phishing",
+        "categories": [
+          "phishing"
+        ]
+      },
+      "data": {
+        "found": true,
+        "resolved": "http://192.168.1.15/login.php",
+        "vt_malicious": 12,
+        "safebrowsing": "malicious",
+        "categories": [
+          "phishing"
+        ],
+        "first_seen_days": 1,
+        "category": "phishing"
+      },
+      "evidence_ids": [
+        "E011"
+      ]
+    },
+    {
+      "id": "C05",
+      "tool": "url_sandbox",
+      "params": {
+        "url": "http://192.168.1.15/login.php"
+      },
+      "reason": "在隔离沙箱中观察跳转链、登录表单与下载行为",
+      "ok": true,
+      "latency_ms": 0.05,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "verdict": "credential_harvest",
+        "risk": 95,
+        "final_url": "http://192.168.1.15/login.php",
+        "has_password_form": true,
+        "downloads": []
+      },
+      "data": {
+        "found": true,
+        "final_url": "http://192.168.1.15/login.php",
+        "redirects": [
+          "http://bit.ly/3xYz",
+          "http://192.168.1.15/login.php"
+        ],
+        "has_password_form": true,
+        "requests_credentials": true,
+        "downloads": [],
+        "verdict": "credential_harvest",
+        "risk": 95
+      },
+      "evidence_ids": [
+        "E012",
+        "E013"
+      ]
+    },
+    {
+      "id": "C06",
+      "tool": "whois_lookup",
+      "params": {
+        "domain": "bit.ly"
+      },
+      "reason": "核实链接落地域名的注册时间与归属",
+      "ok": true,
+      "latency_ms": 0.03,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "vt_malicious": 0,
+        "age_days": 6000,
+        "created": "2010-01-01T00:00:00Z",
+        "registrar": "Bitly Inc.",
+        "category": "url-shortener",
+        "brand": "bitly"
+      },
+      "data": {
+        "found": true,
+        "age_days": 6000,
+        "created": "2010-01-01T00:00:00Z",
+        "registrar": "Bitly Inc.",
+        "privacy": false,
+        "nameservers": [
+          "ns1.bitly.com"
+        ],
+        "vt_malicious": 0,
+        "category": "url-shortener",
+        "brand": "bitly"
+      },
+      "evidence_ids": [
+        "E014"
+      ]
+    },
+    {
+      "id": "C07",
+      "tool": "retrieve_similar_campaigns",
+      "params": {
+        "text": "Urgent: Password Expiry Notification\nDear User,\n\nYour password will expire in 2 hours. Click here immediately to verify or your account will be locked.\n\n[http://bit.ly/3xYz](http://bit.ly/3xYz)\n\nMicrosoft Account Team",
+        "domains": [
+          "micr0soft-security.com",
+          "bit.ly"
+        ]
+      },
+      "reason": "检索历史攻击活动库，判断是否命中已知钓鱼战役",
+      "ok": true,
+      "latency_ms": 0.09,
+      "error": "",
+      "data_summary": {
+        "found": true,
+        "matches": 1
+      },
+      "data": {
+        "found": true,
+        "matches": [
+          {
+            "id": "CAM-2026-1018-A",
+            "name": "Microsoft 密码过期钓鱼",
+            "summary": "仿冒 Microsoft 的密码过期通知，诱导用户在伪造登录页输入凭据。",
+            "similarity": 0.725,
+            "matched_keywords": [
+              "password will expire",
+              "account will be locked"
+            ]
+          }
+        ]
+      },
+      "evidence_ids": [
+        "E015"
+      ]
+    }
+  ],
+  "analysis_steps": [
+    {
+      "phase": "perceive",
+      "title": "感知：解析并静态检测邮件",
+      "detail": "解析出 1 个链接、0 个附件、0 张图片；静态检测产生 5 条证据。",
+      "elapsed_ms": 39.2,
+      "data": {
+        "links": 1,
+        "attachments": 0,
+        "images": 0,
+        "detector_errors": []
+      }
+    },
+    {
+      "phase": "plan",
+      "title": "规划：选择调查工具",
+      "detail": "规划策略 heuristic，计划调用 7 个工具：whois_lookup, dns_auth_check, url_reputation, url_reputation, url_sandbox, whois_lookup, retrieve_similar_campaigns",
+      "elapsed_ms": 0.24,
+      "data": {
+        "strategy": "heuristic",
+        "tools": [
+          "whois_lookup",
+          "dns_auth_check",
+          "url_reputation",
+          "url_reputation",
+          "url_sandbox",
+          "whois_lookup",
+          "retrieve_similar_campaigns"
+        ]
+      }
+    },
+    {
+      "phase": "act",
+      "title": "行动：执行外部调查",
+      "detail": "执行 7 个工具调用，成功 7，失败 0；新增 10 条工具证据。",
+      "elapsed_ms": 2.18,
+      "data": {
+        "failed": 0,
+        "evidence": 10
+      }
+    },
+    {
+      "phase": "judge",
+      "title": "判断：确定性证据融合",
+      "detail": "证据加权得分 61.9，缓解扣减 3.6，策略下限 95.0。",
+      "elapsed_ms": 0.09,
+      "data": {
+        "raw_score": 61.9,
+        "floor": 95.0,
+        "category_scores": {
+          "header_auth": 0.8749,
+          "sender_identity": 0.8438,
+          "url": 1.0,
+          "attachment": 0.0,
+          "content": 0.6787,
+          "image": 0.0,
+          "prompt_injection": 0.0,
+          "threat_intel": 0.9927
+        }
+      }
+    },
+    {
+      "phase": "judge",
+      "title": "判断：模型综合分析与策略校验",
+      "detail": "分析器 anthropic/deepseek-v4.1-flash，引用证据 15 条，评分调整 +0.0，最终 95.0 分。",
+      "elapsed_ms": 10533.54,
+      "data": {
+        "adjustment": 0.0,
+        "cited": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008",
+          "E009",
+          "E010",
+          "E011",
+          "E012",
+          "E013",
+          "E014",
+          "E015"
+        ]
+      }
+    },
+    {
+      "phase": "report",
+      "title": "报告：生成证据链与处置建议",
+      "detail": "风险 95.0/100（Critical），建议 Block。",
+      "elapsed_ms": 10578.95,
+      "data": {
+        "action": "Block",
+        "risk_score": 95.0
+      }
+    }
+  ],
+  "conflicts": [
+    "E014 将 bit.ly 标记为 mitigating（注册 16.4 年、无恶意记录），但该短链在本次事件中被用于跳转至恶意凭据窃取页面 [E005][E011]，故不构成对整体风险的实质性抵消。",
+    "E010/E012/E005 中出现的 192.168.1.15 属私有/保留地址段，说明该落地地址为沙箱或受控环境中的复现地址，但恶意 URL 与凭据窃取的判定仍以威胁情报与沙箱结果为准。"
+  ],
+  "injection_detected": false,
+  "recommended_actions": [
+    "立即隔离并拦截该邮件，阻止同批次投递",
+    "将发件域名与已提取的 URL 加入临时阻断名单",
+    "通知 SOC 检索同主题/同发件人的其他收件人",
+    "对已交互用户强制重置密码并吊销会话令牌"
+  ],
+  "engine": {
+    "version": "1.0.0",
+    "mode": "hybrid-llm",
+    "llm_provider": "anthropic",
+    "llm_model": "claude-sonnet-4-6[1M]",
+    "llm_active": true,
+    "planner": "heuristic",
+    "planner_requested": "heuristic",
+    "intel": "mock",
+    "thresholds": {
+      "block": 70,
+      "quarantine": 40
+    },
+    "tool_budget": 12
+  },
+  "latency_ms": 10578.95,
+  "generated_at": "2026-10-20T10:14:12.173019+00:00",
+  "email_snapshot": {
+    "id": "email_001",
+    "headers": {
+      "from": "Microsoft Support <support@micr0soft-security.com>",
+      "to": "employee@company.com",
+      "subject": "Urgent: Password Expiry Notification",
+      "spf_result": "fail",
+      "dkim_result": "none",
+      "dmarc_result": "fail",
+      "return-path": "bounce@micr0soft-security.com",
+      "reply-to": "support@micr0soft-security.com"
+    },
+    "body_text": "Dear User,\n\nYour password will expire in 2 hours. Click here immediately to verify or your account will be locked.\n\n[http://bit.ly/3xYz](http://bit.ly/3xYz)\n\nMicrosoft Account Team",
+    "body_html": "",
+    "links": [
+      {
+        "original": "http://bit.ly/3xYz",
+        "resolved": "http://192.168.1.15/login.php",
+        "anchor_text": "Verify Now"
+      }
+    ],
+    "attachments": [],
+    "images": []
+  },
+  "notes": []
+}
